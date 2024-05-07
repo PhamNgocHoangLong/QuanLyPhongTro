@@ -1,0 +1,58 @@
+﻿@page "/danhgia/create"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>DanhGia</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="DanhGia" OnValidSubmit="AddDanhGia" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="ngaydanhgia" class="form-label">NgayDanhGia:</label> 
+                <InputDate id="ngaydanhgia" @bind-Value="DanhGia.NgayDanhGia" class="form-control" /> 
+                <ValidationMessage For="() => DanhGia.NgayDanhGia" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="noidung" class="form-label">NoiDung:</label> 
+                <InputText id="noidung" @bind-Value="DanhGia.NoiDung" class="form-control" /> 
+                <ValidationMessage For="() => DanhGia.NoiDung" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="manguoidanhgia" class="form-label">MaNguoiDanhGia:</label> 
+                <InputNumber id="manguoidanhgia" @bind-Value="DanhGia.MaNguoiDanhGia" class="form-control" /> 
+                <ValidationMessage For="() => DanhGia.MaNguoiDanhGia" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="maphongtro" class="form-label">MaPhongTro:</label> 
+                <InputNumber id="maphongtro" @bind-Value="DanhGia.MaPhongTro" class="form-control" /> 
+                <ValidationMessage For="() => DanhGia.MaPhongTro" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/danhgia">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public DanhGia DanhGia { get; set; } = new();
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddDanhGia()
+    {
+        DB.DanhGia.Add(DanhGia);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/danhgia");
+    }
+}

@@ -1,0 +1,51 @@
+﻿@page "/danhgia/details"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>DanhGia</h4>
+    <hr />
+    @if (danhgia is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">NgayDanhGia</dt>
+            <dd class="col-sm-10">@danhgia.NgayDanhGia</dd>
+            <dt class="col-sm-2">NoiDung</dt>
+            <dd class="col-sm-10">@danhgia.NoiDung</dd>
+            <dt class="col-sm-2">MaNguoiDanhGia</dt>
+            <dd class="col-sm-10">@danhgia.MaNguoiDanhGia</dd>
+            <dt class="col-sm-2">MaPhongTro</dt>
+            <dd class="col-sm-10">@danhgia.MaPhongTro</dd>
+        </dl>
+        <div>
+            <a href="@($"/danhgia/edit?madanhgia={danhgia.MaDanhGia}")">Edit</a> |
+            <a href="@($"/danhgia")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    DanhGia? danhgia;
+
+    [SupplyParameterFromQuery]
+    public int MaDanhGia { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        danhgia = await DB.DanhGia.FirstOrDefaultAsync(m => m.MaDanhGia == MaDanhGia);
+
+        if (danhgia is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

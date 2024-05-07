@@ -1,0 +1,59 @@
+﻿@page "/phongtros/details"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>PhongTro</h4>
+    <hr />
+    @if (phongtro is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">MaChuTro</dt>
+            <dd class="col-sm-10">@phongtro.MaChuTro</dd>
+            <dt class="col-sm-2">TenChuTro</dt>
+            <dd class="col-sm-10">@phongtro.TenChuTro</dd>
+            <dt class="col-sm-2">DiaChiTro</dt>
+            <dd class="col-sm-10">@phongtro.DiaChiTro</dd>
+            <dt class="col-sm-2">TrangThai</dt>
+            <dd class="col-sm-10">@phongtro.TrangThai</dd>
+            <dt class="col-sm-2">DienTich</dt>
+            <dd class="col-sm-10">@phongtro.DienTich</dd>
+            <dt class="col-sm-2">Gia</dt>
+            <dd class="col-sm-10">@phongtro.Gia</dd>
+            <dt class="col-sm-2">NgayDang</dt>
+            <dd class="col-sm-10">@phongtro.NgayDang</dd>
+            <dt class="col-sm-2">ChiTiet</dt>
+            <dd class="col-sm-10">@phongtro.ChiTiet</dd>
+        </dl>
+        <div>
+            <a href="@($"/phongtros/edit?maphongtro={phongtro.MaPhongTro}")">Edit</a> |
+            <a href="@($"/phongtros")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    PhongTro? phongtro;
+
+    [SupplyParameterFromQuery]
+    public int MaPhongTro { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        phongtro = await DB.PhongTro.FirstOrDefaultAsync(m => m.MaPhongTro == MaPhongTro);
+
+        if (phongtro is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

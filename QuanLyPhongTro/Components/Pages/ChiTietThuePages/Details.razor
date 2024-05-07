@@ -1,0 +1,51 @@
+﻿@page "/chitietthues/details"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>ChiTietThue</h4>
+    <hr />
+    @if (chitietthue is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">MaChuTro</dt>
+            <dd class="col-sm-10">@chitietthue.MaChuTro</dd>
+            <dt class="col-sm-2">MaNguoiThue</dt>
+            <dd class="col-sm-10">@chitietthue.MaNguoiThue</dd>
+            <dt class="col-sm-2">ThoiGianThue</dt>
+            <dd class="col-sm-10">@chitietthue.ThoiGianThue</dd>
+            <dt class="col-sm-2">DiaChiThue</dt>
+            <dd class="col-sm-10">@chitietthue.DiaChiThue</dd>
+        </dl>
+        <div>
+            <a href="@($"/chitietthues/edit?machitietthue={chitietthue.MaChiTietThue}")">Edit</a> |
+            <a href="@($"/chitietthues")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    ChiTietThue? chitietthue;
+
+    [SupplyParameterFromQuery]
+    public int MaChiTietThue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        chitietthue = await DB.ChiTietThue.FirstOrDefaultAsync(m => m.MaChiTietThue == MaChiTietThue);
+
+        if (chitietthue is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

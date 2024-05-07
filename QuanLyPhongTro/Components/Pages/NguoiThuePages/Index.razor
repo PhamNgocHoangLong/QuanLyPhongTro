@@ -1,0 +1,28 @@
+﻿@page "/nguoithues"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+
+<PageTitle>Người Thuê</PageTitle>
+
+<h1>Người Thuê</h1>
+
+<p>
+    <a href="nguoithues/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.NguoiThue">
+    <PropertyColumn Property="nguoithue => nguoithue.MaPhongTro" />
+    <PropertyColumn Property="nguoithue => nguoithue.HoVaTen" />
+    <PropertyColumn Property="nguoithue => nguoithue.Sdt" />
+    <PropertyColumn Property="nguoithue => nguoithue.GioiTinh" />
+    <PropertyColumn Property="nguoithue => nguoithue.email" />
+    <PropertyColumn Property="nguoithue => nguoithue.NgaySinh" />
+    <PropertyColumn Property="nguoithue => nguoithue.NgayDK" />
+
+    <TemplateColumn Context="nguoithue">
+        <a href="@($"nguoithues/edit?idnguoithue={nguoithue.IdNguoiThue}")">Edit</a> |
+        <a href="@($"nguoithues/details?idnguoithue={nguoithue.IdNguoiThue}")">Details</a> |
+        <a href="@($"nguoithues/delete?idnguoithue={nguoithue.IdNguoiThue}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

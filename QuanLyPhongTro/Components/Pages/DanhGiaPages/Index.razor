@@ -1,0 +1,25 @@
+﻿@page "/danhgia"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+
+<PageTitle>Đánh Giá</PageTitle>
+
+<h1>Đánh Giá</h1>
+
+<p>
+    <a href="danhgia/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.DanhGia">
+    <PropertyColumn Property="danhgia => danhgia.NgayDanhGia" />
+    <PropertyColumn Property="danhgia => danhgia.NoiDung" />
+    <PropertyColumn Property="danhgia => danhgia.MaNguoiDanhGia" />
+    <PropertyColumn Property="danhgia => danhgia.MaPhongTro" />
+
+    <TemplateColumn Context="danhgia">
+        <a href="@($"danhgia/edit?madanhgia={danhgia.MaDanhGia}")">Edit</a> |
+        <a href="@($"danhgia/details?madanhgia={danhgia.MaDanhGia}")">Details</a> |
+        <a href="@($"danhgia/delete?madanhgia={danhgia.MaDanhGia}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

@@ -1,0 +1,101 @@
+﻿@page "/DanhGia/edit"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>DanhGia</h4>
+<hr />
+@if (DanhGia is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="DanhGia" OnValidSubmit="UpdateDanhGia" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="DanhGia.MaDanhGia" value="@DanhGia.MaDanhGia" />
+                <div class="mb-3">
+                    <label for="ngaydanhgia" class="form-label">NgayDanhGia:</label>
+                    <InputDate id="ngaydanhgia" @bind-Value="DanhGia.NgayDanhGia" class="form-control" />
+                    <ValidationMessage For="() => DanhGia.NgayDanhGia" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="noidung" class="form-label">NoiDung:</label>
+                    <InputText id="noidung" @bind-Value="DanhGia.NoiDung" class="form-control" />
+                    <ValidationMessage For="() => DanhGia.NoiDung" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="manguoidanhgia" class="form-label">MaNguoiDanhGia:</label>
+                    <InputNumber id="manguoidanhgia" @bind-Value="DanhGia.MaNguoiDanhGia" class="form-control" />
+                    <ValidationMessage For="() => DanhGia.MaNguoiDanhGia" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="maphongtro" class="form-label">MaPhongTro:</label>
+                    <InputNumber id="maphongtro" @bind-Value="DanhGia.MaPhongTro" class="form-control" />
+                    <ValidationMessage For="() => DanhGia.MaPhongTro" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/danhgia">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int MaDanhGia { get; set; }
+
+    [SupplyParameterFromForm]
+    public DanhGia? DanhGia { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DanhGia ??= await DB.DanhGia.FirstOrDefaultAsync(m => m.MaDanhGia == MaDanhGia);
+
+        if (DanhGia is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateDanhGia()
+    {
+        DB.Attach(DanhGia!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!DanhGiaExists(DanhGia!.MaDanhGia))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/danhgia");
+    }
+
+    bool DanhGiaExists(int madanhgia)
+    {
+        return DB.DanhGia.Any(e => e.MaDanhGia == madanhgia);
+    }
+}

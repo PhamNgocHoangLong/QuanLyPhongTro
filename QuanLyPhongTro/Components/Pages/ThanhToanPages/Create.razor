@@ -1,0 +1,58 @@
+﻿@page "/thanhtoans/create"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>ThanhToan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="ThanhToan" OnValidSubmit="AddThanhToan" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="maphongtro" class="form-label">MaPhongTro:</label> 
+                <InputNumber id="maphongtro" @bind-Value="ThanhToan.MaPhongTro" class="form-control" /> 
+                <ValidationMessage For="() => ThanhToan.MaPhongTro" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="ngaytratien" class="form-label">NgayTraTien:</label> 
+                <InputDate id="ngaytratien" @bind-Value="ThanhToan.NgayTraTien" class="form-control" /> 
+                <ValidationMessage For="() => ThanhToan.NgayTraTien" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="sotien" class="form-label">SoTien:</label> 
+                <InputNumber id="sotien" @bind-Value="ThanhToan.SoTien" class="form-control" /> 
+                <ValidationMessage For="() => ThanhToan.SoTien" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="phuongthuctt" class="form-label">PhuongThucTT:</label> 
+                <InputText id="phuongthuctt" @bind-Value="ThanhToan.PhuongThucTT" class="form-control" /> 
+                <ValidationMessage For="() => ThanhToan.PhuongThucTT" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/thanhtoans">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public ThanhToan ThanhToan { get; set; } = new();
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddThanhToan()
+    {
+        DB.ThanhToan.Add(ThanhToan);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/thanhtoans");
+    }
+}

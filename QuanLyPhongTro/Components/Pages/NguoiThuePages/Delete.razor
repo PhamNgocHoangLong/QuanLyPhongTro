@@ -1,0 +1,77 @@
+﻿@page "/nguoithues/delete"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Delete</PageTitle>
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>NguoiThue</h4>
+    <hr />
+    @if (nguoithue is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">MaPhongTro</dt>
+            <dd class="col-sm-10">@nguoithue.MaPhongTro</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">HoVaTen</dt>
+            <dd class="col-sm-10">@nguoithue.HoVaTen</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Sdt</dt>
+            <dd class="col-sm-10">@nguoithue.Sdt</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">GioiTinh</dt>
+            <dd class="col-sm-10">@nguoithue.GioiTinh</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">email</dt>
+            <dd class="col-sm-10">@nguoithue.email</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">NgaySinh</dt>
+            <dd class="col-sm-10">@nguoithue.NgaySinh</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">NgayDK</dt>
+            <dd class="col-sm-10">@nguoithue.NgayDK</dd>
+        </dl>
+        <EditForm method="post" Model="nguoithue" OnValidSubmit="DeleteNguoiThue" FormName="delete" Enhance>
+            <button type="submit" class="btn btn-danger" disabled="@(nguoithue is null)">Delete</button> |
+            <a href="/nguoithues">Back to List</a>
+        </EditForm>
+    }
+</div>
+
+@code {
+    NguoiThue? nguoithue;
+
+    [SupplyParameterFromQuery]
+    public int IdNguoiThue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        nguoithue = await DB.NguoiThue.FirstOrDefaultAsync(m => m.IdNguoiThue == IdNguoiThue);
+
+        if (nguoithue is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    public async Task DeleteNguoiThue()
+    {
+        DB.NguoiThue.Remove(nguoithue!);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/nguoithues");
+    }
+}

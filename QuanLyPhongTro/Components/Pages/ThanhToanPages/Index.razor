@@ -1,0 +1,25 @@
+﻿@page "/thanhtoans"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+
+<PageTitle>Thanh Toán</PageTitle>
+
+<h1>Thanh Toán</h1>
+
+<p>
+    <a href="thanhtoans/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.ThanhToan">
+    <PropertyColumn Property="thanhtoan => thanhtoan.MaPhongTro" />
+    <PropertyColumn Property="thanhtoan => thanhtoan.NgayTraTien" />
+    <PropertyColumn Property="thanhtoan => thanhtoan.SoTien" />
+    <PropertyColumn Property="thanhtoan => thanhtoan.PhuongThucTT" />
+
+    <TemplateColumn Context="thanhtoan">
+        <a href="@($"thanhtoans/edit?mathanhtoan={thanhtoan.MaThanhToan}")">Edit</a> |
+        <a href="@($"thanhtoans/details?mathanhtoan={thanhtoan.MaThanhToan}")">Details</a> |
+        <a href="@($"thanhtoans/delete?mathanhtoan={thanhtoan.MaThanhToan}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

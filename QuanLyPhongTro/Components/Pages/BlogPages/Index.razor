@@ -1,0 +1,24 @@
+﻿@page "/blogs"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="blogs/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.Blog">
+    <PropertyColumn Property="blog => blog.Name" />
+    <PropertyColumn Property="blog => blog.Description" />
+    <PropertyColumn Property="blog => blog.Author" />
+
+    <TemplateColumn Context="blog">
+        <a href="@($"blogs/edit?id={blog.Id}")">Edit</a> |
+        <a href="@($"blogs/details?id={blog.Id}")">Details</a> |
+        <a href="@($"blogs/delete?id={blog.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

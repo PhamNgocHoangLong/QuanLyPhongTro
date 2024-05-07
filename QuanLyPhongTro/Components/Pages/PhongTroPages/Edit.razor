@@ -1,0 +1,121 @@
+﻿@page "/PhongTros/edit"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>PhongTro</h4>
+<hr />
+@if (PhongTro is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="PhongTro" OnValidSubmit="UpdatePhongTro" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="PhongTro.MaPhongTro" value="@PhongTro.MaPhongTro" />
+                <div class="mb-3">
+                    <label for="machutro" class="form-label">MaChuTro:</label>
+                    <InputNumber id="machutro" @bind-Value="PhongTro.MaChuTro" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.MaChuTro" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="tenchutro" class="form-label">TenChuTro:</label>
+                    <InputText id="tenchutro" @bind-Value="PhongTro.TenChuTro" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.TenChuTro" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="diachitro" class="form-label">DiaChiTro:</label>
+                    <InputText id="diachitro" @bind-Value="PhongTro.DiaChiTro" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.DiaChiTro" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="trangthai" class="form-label">TrangThai:</label>
+                    <InputCheckbox id="trangthai" @bind-Value="PhongTro.TrangThai" class="form-check-input" />
+                    <ValidationMessage For="() => PhongTro.TrangThai" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="dientich" class="form-label">DienTich:</label>
+                    <InputNumber id="dientich" @bind-Value="PhongTro.DienTich" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.DienTich" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="gia" class="form-label">Gia:</label>
+                    <InputNumber id="gia" @bind-Value="PhongTro.Gia" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.Gia" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="ngaydang" class="form-label">NgayDang:</label>
+                    <InputDate id="ngaydang" @bind-Value="PhongTro.NgayDang" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.NgayDang" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="chitiet" class="form-label">ChiTiet:</label>
+                    <InputText id="chitiet" @bind-Value="PhongTro.ChiTiet" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.ChiTiet" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/phongtros">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int MaPhongTro { get; set; }
+
+    [SupplyParameterFromForm]
+    public PhongTro? PhongTro { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PhongTro ??= await DB.PhongTro.FirstOrDefaultAsync(m => m.MaPhongTro == MaPhongTro);
+
+        if (PhongTro is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdatePhongTro()
+    {
+        DB.Attach(PhongTro!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!PhongTroExists(PhongTro!.MaPhongTro))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/phongtros");
+    }
+
+    bool PhongTroExists(int maphongtro)
+    {
+        return DB.PhongTro.Any(e => e.MaPhongTro == maphongtro);
+    }
+}

@@ -1,0 +1,101 @@
+﻿@page "/ThanhToans/edit"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>ThanhToan</h4>
+<hr />
+@if (ThanhToan is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="ThanhToan" OnValidSubmit="UpdateThanhToan" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="ThanhToan.MaThanhToan" value="@ThanhToan.MaThanhToan" />
+                <div class="mb-3">
+                    <label for="maphongtro" class="form-label">MaPhongTro:</label>
+                    <InputNumber id="maphongtro" @bind-Value="ThanhToan.MaPhongTro" class="form-control" />
+                    <ValidationMessage For="() => ThanhToan.MaPhongTro" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="ngaytratien" class="form-label">NgayTraTien:</label>
+                    <InputDate id="ngaytratien" @bind-Value="ThanhToan.NgayTraTien" class="form-control" />
+                    <ValidationMessage For="() => ThanhToan.NgayTraTien" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="sotien" class="form-label">SoTien:</label>
+                    <InputNumber id="sotien" @bind-Value="ThanhToan.SoTien" class="form-control" />
+                    <ValidationMessage For="() => ThanhToan.SoTien" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="phuongthuctt" class="form-label">PhuongThucTT:</label>
+                    <InputText id="phuongthuctt" @bind-Value="ThanhToan.PhuongThucTT" class="form-control" />
+                    <ValidationMessage For="() => ThanhToan.PhuongThucTT" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/thanhtoans">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int MaThanhToan { get; set; }
+
+    [SupplyParameterFromForm]
+    public ThanhToan? ThanhToan { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ThanhToan ??= await DB.ThanhToan.FirstOrDefaultAsync(m => m.MaThanhToan == MaThanhToan);
+
+        if (ThanhToan is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateThanhToan()
+    {
+        DB.Attach(ThanhToan!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!ThanhToanExists(ThanhToan!.MaThanhToan))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/thanhtoans");
+    }
+
+    bool ThanhToanExists(int mathanhtoan)
+    {
+        return DB.ThanhToan.Any(e => e.MaThanhToan == mathanhtoan);
+    }
+}

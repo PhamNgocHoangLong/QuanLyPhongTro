@@ -1,0 +1,116 @@
+﻿@page "/NguoiThues/edit"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>NguoiThue</h4>
+<hr />
+@if (NguoiThue is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="NguoiThue" OnValidSubmit="UpdateNguoiThue" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="NguoiThue.IdNguoiThue" value="@NguoiThue.IdNguoiThue" />
+                <div class="mb-3">
+                    <label for="maphongtro" class="form-label">MaPhongTro:</label>
+                    <InputText id="maphongtro" @bind-Value="NguoiThue.MaPhongTro" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.MaPhongTro" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="hovaten" class="form-label">HoVaTen:</label>
+                    <InputText id="hovaten" @bind-Value="NguoiThue.HoVaTen" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.HoVaTen" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="sdt" class="form-label">Sdt:</label>
+                    <InputText id="sdt" @bind-Value="NguoiThue.Sdt" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.Sdt" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="gioitinh" class="form-label">GioiTinh:</label>
+                    <InputCheckbox id="gioitinh" @bind-Value="NguoiThue.GioiTinh" class="form-check-input" />
+                    <ValidationMessage For="() => NguoiThue.GioiTinh" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">email:</label>
+                    <InputText id="email" @bind-Value="NguoiThue.email" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.email" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="ngaysinh" class="form-label">NgaySinh:</label>
+                    <InputDate id="ngaysinh" @bind-Value="NguoiThue.NgaySinh" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.NgaySinh" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="ngaydk" class="form-label">NgayDK:</label>
+                    <InputDate id="ngaydk" @bind-Value="NguoiThue.NgayDK" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.NgayDK" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/nguoithues">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int IdNguoiThue { get; set; }
+
+    [SupplyParameterFromForm]
+    public NguoiThue? NguoiThue { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NguoiThue ??= await DB.NguoiThue.FirstOrDefaultAsync(m => m.IdNguoiThue == IdNguoiThue);
+
+        if (NguoiThue is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdateNguoiThue()
+    {
+        DB.Attach(NguoiThue!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!NguoiThueExists(NguoiThue!.IdNguoiThue))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/nguoithues");
+    }
+
+    bool NguoiThueExists(int idnguoithue)
+    {
+        return DB.NguoiThue.Any(e => e.IdNguoiThue == idnguoithue);
+    }
+}

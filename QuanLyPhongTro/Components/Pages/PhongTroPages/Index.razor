@@ -1,0 +1,29 @@
+﻿@page "/phongtros"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+
+<PageTitle>Phòng Trọ</PageTitle>
+
+<h1>Phòng Trọ</h1>
+
+<p>
+    <a href="phongtros/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.PhongTro">
+    <PropertyColumn Property="phongtro => phongtro.MaChuTro" />
+    <PropertyColumn Property="phongtro => phongtro.TenChuTro" />
+    <PropertyColumn Property="phongtro => phongtro.DiaChiTro" />
+    <PropertyColumn Property="phongtro => phongtro.TrangThai" />
+    <PropertyColumn Property="phongtro => phongtro.DienTich" />
+    <PropertyColumn Property="phongtro => phongtro.Gia" />
+    <PropertyColumn Property="phongtro => phongtro.NgayDang" />
+    <PropertyColumn Property="phongtro => phongtro.ChiTiet" />
+
+    <TemplateColumn Context="phongtro">
+        <a href="@($"phongtros/edit?maphongtro={phongtro.MaPhongTro}")">Edit</a> |
+        <a href="@($"phongtros/details?maphongtro={phongtro.MaPhongTro}")">Details</a> |
+        <a href="@($"phongtros/delete?maphongtro={phongtro.MaPhongTro}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

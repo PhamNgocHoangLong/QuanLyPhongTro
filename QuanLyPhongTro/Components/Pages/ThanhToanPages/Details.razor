@@ -1,0 +1,51 @@
+﻿@page "/thanhtoans/details"
+@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using QuanLyPhongTro
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>ThanhToan</h4>
+    <hr />
+    @if (thanhtoan is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">MaPhongTro</dt>
+            <dd class="col-sm-10">@thanhtoan.MaPhongTro</dd>
+            <dt class="col-sm-2">NgayTraTien</dt>
+            <dd class="col-sm-10">@thanhtoan.NgayTraTien</dd>
+            <dt class="col-sm-2">SoTien</dt>
+            <dd class="col-sm-10">@thanhtoan.SoTien</dd>
+            <dt class="col-sm-2">PhuongThucTT</dt>
+            <dd class="col-sm-10">@thanhtoan.PhuongThucTT</dd>
+        </dl>
+        <div>
+            <a href="@($"/thanhtoans/edit?mathanhtoan={thanhtoan.MaThanhToan}")">Edit</a> |
+            <a href="@($"/thanhtoans")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    ThanhToan? thanhtoan;
+
+    [SupplyParameterFromQuery]
+    public int MaThanhToan { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        thanhtoan = await DB.ThanhToan.FirstOrDefaultAsync(m => m.MaThanhToan == MaThanhToan);
+
+        if (thanhtoan is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
