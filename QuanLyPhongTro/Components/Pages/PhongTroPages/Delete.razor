@@ -4,13 +4,12 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Delete</PageTitle>
+<PageTitle>Xóa phòng</PageTitle>
 
-<h1>Delete</h1>
+<h1 class="text-danger-emphasis fw-bold text-center">Xóa phòng</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3 class="text-danger">Bạn có chắc chắn muốn xóa phòng này!</h3>
 <div>
-    <h4>PhongTro</h4>
     <hr />
     @if (phongtro is null)
     {
@@ -18,40 +17,40 @@
     }
     else {
         <dl class="row">
-            <dt class="col-sm-2">MaChuTro</dt>
+            <dt class="col-sm-2 text-primary">Mã chủ trọ</dt>
             <dd class="col-sm-10">@phongtro.MaChuTro</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">TenChuTro</dt>
+            <dt class="col-sm-2 text-primary">Tên chủ trọ</dt>
             <dd class="col-sm-10">@phongtro.TenChuTro</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">DiaChiTro</dt>
+            <dt class="col-sm-2 text-primary">Địa chỉ trọ</dt>
             <dd class="col-sm-10">@phongtro.DiaChiTro</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">TrangThai</dt>
+            <dt class="col-sm-2 text-primary">Trạng thái</dt>
             <dd class="col-sm-10">@phongtro.TrangThai</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">DienTich</dt>
+            <dt class="col-sm-2 text-primary">Diện tích</dt>
             <dd class="col-sm-10">@phongtro.DienTich</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">Gia</dt>
+            <dt class="col-sm-2 text-primary">Giá phòng</dt>
             <dd class="col-sm-10">@phongtro.Gia</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">NgayDang</dt>
+            <dt class="col-sm-2 text-primary">Ngày đăng</dt>
             <dd class="col-sm-10">@phongtro.NgayDang</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2">ChiTiet</dt>
+            <dt class="col-sm-2 text-primary">Chi tiết</dt>
             <dd class="col-sm-10">@phongtro.ChiTiet</dd>
         </dl>
         <EditForm method="post" Model="phongtro" OnValidSubmit="DeletePhongTro" FormName="delete" Enhance>
-            <button type="submit" class="btn btn-danger" disabled="@(phongtro is null)">Delete</button> |
-            <a href="/phongtros">Back to List</a>
+            <button type="submit" class="btn btn-danger me-3 px-4" disabled="@(phongtro is null)">Xóa</button>
+            <a href="/phongtros" class="text-decoration-none">Quay lại</a>
         </EditForm>
     }
 </div>
