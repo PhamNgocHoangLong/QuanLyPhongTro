@@ -4,38 +4,39 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Chi tiết</PageTitle>
+<PageTitle>Details</PageTitle>
 
-<h1 class="text-danger-emphasis fw-bold text-center">Chi tiết phòng trọ</h1>
+<h1>Details</h1>
 
 <div>
+    <h4>PhongTro</h4>
     <hr />
     @if (phongtro is null)
     {
         <p><em>Loading...</em></p>
     }
     else {
-        <dl class="row g-2">
-            <dt class="col-sm-2 text-primary">Mã phòng trọ</dt>
-            <dd class="col-sm-10">@phongtro.MaChuTro</dd>
-            <dt class="col-sm-2 text-primary">Tên phòng trọ</dt>
-            <dd class="col-sm-10">@phongtro.TenChuTro</dd>
-            <dt class="col-sm-2 text-primary">Địa chỉ trọ</dt>
-            <dd class="col-sm-10">@phongtro.DiaChiTro</dd>
-            <dt class="col-sm-2 text-primary">Trạng thái</dt>
+        <dl class="row">
+            <dt class="col-sm-2">MaChuTro</dt>
+            <dd class="col-sm-10">@phongtro.MaCT</dd>
+            <dt class="col-sm-2">TenChuTro</dt>
+            <dd class="col-sm-10">@phongtro.TenCT</dd>
+            <dt class="col-sm-2">DiaChiTro</dt>
+            <dd class="col-sm-10">@phongtro.DiaChi</dd>
+            <dt class="col-sm-2">TrangThai</dt>
             <dd class="col-sm-10">@phongtro.TrangThai</dd>
-            <dt class="col-sm-2 text-primary">Diện tích</dt>
+            <dt class="col-sm-2">DienTich</dt>
             <dd class="col-sm-10">@phongtro.DienTich</dd>
-            <dt class="col-sm-2 text-primary">Giá phòng</dt>
+            <dt class="col-sm-2">Gia</dt>
             <dd class="col-sm-10">@phongtro.Gia</dd>
-            <dt class="col-sm-2 text-primary">Ngày đăng</dt>
+            <dt class="col-sm-2">NgayDang</dt>
             <dd class="col-sm-10">@phongtro.NgayDang</dd>
-            <dt class="col-sm-2 text-primary">Chi tết</dt>
-            <dd class="col-sm-10">@phongtro.ChiTiet</dd>
+            <dt class="col-sm-2">ChiTiet</dt>
+            <dd class="col-sm-10">@phongtro.MoTa</dd>
         </dl>
         <div>
-            <a href="@($"/phongtros/edit?maphongtro={phongtro.MaPhongTro}")" class="btn btn-primary px-4 me-3">Sửa</a>
-            <a href="@($"/phongtros")" class="btn btn-primary">Quay lại</a>
+            <a href="@($"/phongtros/edit?maphongtro={phongtro.MaPhongTro}")">Edit</a> |
+            <a href="@($"/phongtros")">Back to List</a>
         </div>
     }
 </div>
@@ -44,7 +45,7 @@
     PhongTro? phongtro;
 
     [SupplyParameterFromQuery]
-    public int MaPhongTro { get; set; }
+    public string MaPhongTro { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

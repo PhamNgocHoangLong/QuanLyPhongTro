@@ -31,5 +31,6 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+app.MapGet("/test", () => "Hello World!");
 
 app.Run();

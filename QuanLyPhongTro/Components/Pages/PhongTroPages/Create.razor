@@ -14,18 +14,18 @@
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
                 <label for="machutro" class="form-label text-primary fw-medium">Mã chủ trọ:</label>
-                <InputNumber id="machutro" @bind-Value="PhongTro.MaChuTro" class="form-control" /> 
-                <ValidationMessage For="() => PhongTro.MaChuTro" class="text-danger" /> 
+                <InputText id="machutro" @bind-Value="PhongTro.MaCT" class="form-control" /> 
+                <ValidationMessage For="() => PhongTro.MaCT" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="tenchutro" class="form-label text-primary fw-medium">Tên chủ trọ:</label>
-                <InputText id="tenchutro" @bind-Value="PhongTro.TenChuTro" class="form-control" /> 
-                <ValidationMessage For="() => PhongTro.TenChuTro" class="text-danger" /> 
+                <InputText id="tenchutro" @bind-Value="PhongTro.TenCT" class="form-control" /> 
+                <ValidationMessage For="() => PhongTro.TenCT" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="diachitro" class="form-label text-primary fw-medium">Địa chỉ trọ:</label>
-                <InputText id="diachitro" @bind-Value="PhongTro.DiaChiTro" class="form-control" /> 
-                <ValidationMessage For="() => PhongTro.DiaChiTro" class="text-danger" /> 
+                <InputText id="diachitro" @bind-Value="PhongTro.DiaChi" class="form-control" /> 
+                <ValidationMessage For="() => PhongTro.DiaChi" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="trangthai" class="form-label text-primary fw-medium">Trạng thái:</label>
@@ -34,12 +34,12 @@
             </div>        
             <div class="mb-3">
                 <label for="dientich" class="form-label text-primary fw-medium">Diện tích:</label>
-                <InputNumber id="dientich" @bind-Value="PhongTro.DienTich" class="form-control" /> 
+                <InputText id="dientich" @bind-Value="PhongTro.DienTich" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.DienTich" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="gia" class="form-label text-primary fw-medium">Giá trọ:</label>
-                <InputNumber id="gia" @bind-Value="PhongTro.Gia" class="form-control" /> 
+                <InputText id="gia" @bind-Value="PhongTro.Gia" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.Gia" class="text-danger" /> 
             </div>        
             <div class="mb-3">
@@ -49,8 +49,8 @@
             </div>        
             <div class="mb-3">
                 <label for="chitiet" class="form-label text-primary fw-medium">Chi tiết:</label>
-                <InputText id="chitiet" @bind-Value="PhongTro.ChiTiet" class="form-control" /> 
-                <ValidationMessage For="() => PhongTro.ChiTiet" class="text-danger" /> 
+                <InputText id="chitiet" @bind-Value="PhongTro.MoTa" class="form-control" /> 
+                <ValidationMessage For="() => PhongTro.MoTa" class="text-danger" /> 
             </div>
             <div class="my-3">
                 <button type="submit" class="btn btn-primary me-3 px-4">Tạo</button>

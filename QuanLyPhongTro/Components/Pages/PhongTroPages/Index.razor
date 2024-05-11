@@ -5,25 +5,25 @@
 
 <PageTitle>Phòng Trọ</PageTitle>
 
-<h1 class="text-info">Danh Sách Phòng Trọ</h1> 
+<h1>Phòng Trọ</h1>
 
 <p>
-    <a href="phongtros/create" class="btn btn-primary">Tạo mới</a>
+    <a href="phongtros/create">Create New</a>
 </p>
 
 <QuickGrid Class="table" Items="DB.PhongTro">
-    <PropertyColumn Property="phongtro => phongtro.MaChuTro" Title="Mã chủ trọ"/>
-    <PropertyColumn Property="phongtro => phongtro.TenChuTro" Title="Tên chủ trọ"/>
-    <PropertyColumn Property="phongtro => phongtro.DiaChiTro" Title="Địa chỉ"/>
-    <PropertyColumn Property="phongtro => phongtro.TrangThai" Title="Trạng thái"/>
-    <PropertyColumn Property="phongtro => phongtro.DienTich" Title="Diện tích"/>
-    <PropertyColumn Property="phongtro => phongtro.Gia" Title="Giá"/>
-    <PropertyColumn Property="phongtro => phongtro.NgayDang" Title="Ngày đăng"/>
-    <PropertyColumn Property="phongtro => phongtro.ChiTiet" Title="Chi tiết"/>
+    <PropertyColumn Property="phongtro => phongtro.MaCT" />
+    <PropertyColumn Property="phongtro => phongtro.TenCT" />
+    <PropertyColumn Property="phongtro => phongtro.DiaChi" />
+    <PropertyColumn Property="phongtro => phongtro.TrangThai" />
+    <PropertyColumn Property="phongtro => phongtro.DienTich" />
+    <PropertyColumn Property="phongtro => phongtro.Gia" />
+    <PropertyColumn Property="phongtro => phongtro.NgayDang" />
+    <PropertyColumn Property="phongtro => phongtro.MoTa" />
 
     <TemplateColumn Context="phongtro">
-        <a href="@($"phongtros/edit?maphongtro={phongtro.MaPhongTro}")" class="text-decoration-none text-warning fw-medium">Sửa</a> |
-        <a href="@($"phongtros/details?maphongtro={phongtro.MaPhongTro}")" class="text-decoration-none text-warning fw-medium">Chi tiết</a> |
-        <a href="@($"phongtros/delete?maphongtro={phongtro.MaPhongTro}")" class="text-decoration-none text-warning fw-medium">Xóa</a>
+        <a href="@($"phongtros/edit?maphongtro={phongtro.MaPhongTro}")">Edit</a> |
+        <a href="@($"phongtros/details?maphongtro={phongtro.MaPhongTro}")">Details</a> |
+        <a href="@($"phongtros/delete?maphongtro={phongtro.MaPhongTro}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>

@@ -4,12 +4,13 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Xóa phòng</PageTitle>
+<PageTitle>Delete</PageTitle>
 
-<h1 class="text-danger-emphasis fw-bold text-center">Xóa phòng</h1>
+<h1>Delete</h1>
 
-<h3 class="text-danger">Bạn có chắc chắn muốn xóa phòng này!</h3>
+<h3>Are you sure you want to delete this?</h3>
 <div>
+    <h4>PhongTro</h4>
     <hr />
     @if (phongtro is null)
     {
@@ -17,40 +18,40 @@
     }
     else {
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Mã chủ trọ</dt>
-            <dd class="col-sm-10">@phongtro.MaChuTro</dd>
+            <dt class="col-sm-2">MaChuTro</dt>
+            <dd class="col-sm-10">@phongtro.MaCT</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Tên chủ trọ</dt>
-            <dd class="col-sm-10">@phongtro.TenChuTro</dd>
+            <dt class="col-sm-2">TenChuTro</dt>
+            <dd class="col-sm-10">@phongtro.TenCT</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Địa chỉ trọ</dt>
-            <dd class="col-sm-10">@phongtro.DiaChiTro</dd>
+            <dt class="col-sm-2">DiaChiTro</dt>
+            <dd class="col-sm-10">@phongtro.DiaChi</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Trạng thái</dt>
+            <dt class="col-sm-2">TrangThai</dt>
             <dd class="col-sm-10">@phongtro.TrangThai</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Diện tích</dt>
+            <dt class="col-sm-2">DienTich</dt>
             <dd class="col-sm-10">@phongtro.DienTich</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Giá phòng</dt>
+            <dt class="col-sm-2">Gia</dt>
             <dd class="col-sm-10">@phongtro.Gia</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Ngày đăng</dt>
+            <dt class="col-sm-2">NgayDang</dt>
             <dd class="col-sm-10">@phongtro.NgayDang</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Chi tiết</dt>
-            <dd class="col-sm-10">@phongtro.ChiTiet</dd>
+            <dt class="col-sm-2">ChiTiet</dt>
+            <dd class="col-sm-10">@phongtro.MoTa</dd>
         </dl>
         <EditForm method="post" Model="phongtro" OnValidSubmit="DeletePhongTro" FormName="delete" Enhance>
-            <button type="submit" class="btn btn-danger me-3 px-4" disabled="@(phongtro is null)">Xóa</button>
-            <a href="/phongtros" class="text-decoration-none">Quay lại</a>
+            <button type="submit" class="btn btn-danger" disabled="@(phongtro is null)">Delete</button> |
+            <a href="/phongtros">Back to List</a>
         </EditForm>
     }
 </div>
@@ -59,7 +60,7 @@
     PhongTro? phongtro;
 
     [SupplyParameterFromQuery]
-    public int MaPhongTro { get; set; }
+    public string MaPhongTro { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
