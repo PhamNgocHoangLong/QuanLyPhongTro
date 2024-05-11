@@ -4,9 +4,11 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Sửa phòng</PageTitle>
+<PageTitle>Edit</PageTitle>
 
-<h1 class="text-danger-emphasis fw-bold text-center">Sửa thông tin phòng trọ</h1>
+<h1>Edit</h1>
+
+<h4>PhongTro</h4>
 <hr />
 @if (PhongTro is null)
 {
@@ -15,66 +17,64 @@
 else
 {
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
             <EditForm method="post" Model="PhongTro" OnValidSubmit="UpdatePhongTro" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <input type="hidden" name="PhongTro.MaPhongTro" value="@PhongTro.MaPhongTro" />
                 <div class="mb-3">
-                    <label for="machutro" class="form-label text-primary fw-medium">Mã chủ trọ:</label>
-                    <InputNumber id="machutro" @bind-Value="PhongTro.MaChuTro" class="form-control" />
-                    <ValidationMessage For="() => PhongTro.MaChuTro" class="text-danger" />
+                    <label for="machutro" class="form-label">MaChuTro:</label>
+                    <InputNumber id="machutro" @bind-Value="PhongTro.MaCT" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.MaCT" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="tenchutro" class="form-label text-primary fw-medium">Tên chủ trọ:</label>
-                    <InputText id="tenchutro" @bind-Value="PhongTro.TenChuTro" class="form-control" />
-                    <ValidationMessage For="() => PhongTro.TenChuTro" class="text-danger" />
+                    <label for="tenchutro" class="form-label">TenChuTro:</label>
+                    <InputText id="tenchutro" @bind-Value="PhongTro.TenCT" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.TenCT" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="diachitro" class="form-label text-primary fw-medium">Địa chỉ chủ trọ:</label>
-                    <InputText id="diachitro" @bind-Value="PhongTro.DiaChiTro" class="form-control" />
-                    <ValidationMessage For="() => PhongTro.DiaChiTro" class="text-danger" />
+                    <label for="diachitro" class="form-label">DiaChiTro:</label>
+                    <InputText id="diachitro" @bind-Value="PhongTro.DiaChi" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.DiaChi" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="trangthai" class="form-label text-primary fw-medium">Trạng thái:</label>
+                    <label for="trangthai" class="form-label">TrangThai:</label>
                     <InputCheckbox id="trangthai" @bind-Value="PhongTro.TrangThai" class="form-check-input" />
                     <ValidationMessage For="() => PhongTro.TrangThai" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="dientich" class="form-label text-primary fw-medium">Diện tích:</label>
+                    <label for="dientich" class="form-label">DienTich:</label>
                     <InputNumber id="dientich" @bind-Value="PhongTro.DienTich" class="form-control" />
                     <ValidationMessage For="() => PhongTro.DienTich" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="gia" class="form-label text-primary fw-medium">Giá phòng:</label>
+                    <label for="gia" class="form-label">Gia:</label>
                     <InputNumber id="gia" @bind-Value="PhongTro.Gia" class="form-control" />
                     <ValidationMessage For="() => PhongTro.Gia" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="ngaydang" class="form-label text-primary fw-medium">Ngày đăng:</label>
+                    <label for="ngaydang" class="form-label">NgayDang:</label>
                     <InputDate id="ngaydang" @bind-Value="PhongTro.NgayDang" class="form-control" />
                     <ValidationMessage For="() => PhongTro.NgayDang" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="chitiet" class="form-label text-primary fw-medium">Chi tiết:</label>
-                    <InputText id="chitiet" @bind-Value="PhongTro.ChiTiet" class="form-control" />
-                    <ValidationMessage For="() => PhongTro.ChiTiet" class="text-danger" />
+                    <label for="chitiet" class="form-label">ChiTiet:</label>
+                    <InputText id="chitiet" @bind-Value="PhongTro.MoTa" class="form-control" />
+                    <ValidationMessage For="() => PhongTro.MoTa" class="text-danger" />
                 </div>
-                <div>
-                    <button type="submit" class="btn btn-primary px-4 my-3 me-3">Lưu</button>
-                    <a href="/phongtros" class="text-decoration-none">Quay lại</a>
-                </div>
-                
+                <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>
     </div>
 }
 
-
+<div>
+    <a href="/phongtros">Back to List</a>
+</div>
 
 @code {
     [SupplyParameterFromQuery]
-    public int MaPhongTro { get; set; }
+    public string MaPhongTro { get; set; }
 
     [SupplyParameterFromForm]
     public PhongTro? PhongTro { get; set; }
@@ -114,7 +114,7 @@ else
         NavigationManager.NavigateTo("/phongtros");
     }
 
-    bool PhongTroExists(int maphongtro)
+    bool PhongTroExists(string maphongtro)
     {
         return DB.PhongTro.Any(e => e.MaPhongTro == maphongtro);
     }
