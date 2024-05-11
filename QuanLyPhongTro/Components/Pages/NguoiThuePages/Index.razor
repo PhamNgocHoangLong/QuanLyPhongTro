@@ -5,24 +5,24 @@
 
 <PageTitle>Người Thuê</PageTitle>
 
-<h1>Người Thuê</h1>
+<h1 class="text-info">Danh Sách Người Thuê</h1>
 
 <p>
-    <a href="nguoithues/create">Create New</a>
+    <a href="nguoithues/create" class="btn btn-primary">Tạo mới</a>
 </p>
 
 <QuickGrid Class="table" Items="DB.NguoiThue">
-    <PropertyColumn Property="nguoithue => nguoithue.MaPhongTro" />
-    <PropertyColumn Property="nguoithue => nguoithue.HoVaTen" />
-    <PropertyColumn Property="nguoithue => nguoithue.Sdt" />
-    <PropertyColumn Property="nguoithue => nguoithue.GioiTinh" />
-    <PropertyColumn Property="nguoithue => nguoithue.email" />
-    <PropertyColumn Property="nguoithue => nguoithue.NgaySinh" />
-    <PropertyColumn Property="nguoithue => nguoithue.NgayDK" />
+    <PropertyColumn Property="nguoithue => nguoithue.MaPhongTro" Title="Mã phòng"/>
+    <PropertyColumn Property="nguoithue => nguoithue.HoVaTen" Title="Họ tên"/>
+    <PropertyColumn Property="nguoithue => nguoithue.Sdt" Title="SĐT"/>
+    <PropertyColumn Property="nguoithue => nguoithue.GioiTinh" Title="Giới tính"/>
+    <PropertyColumn Property="nguoithue => nguoithue.email" Title="Email"/>
+    <PropertyColumn Property="nguoithue => nguoithue.NgaySinh" Title="Ngày sinh"/>
+    <PropertyColumn Property="nguoithue => nguoithue.NgayDK" Title="Ngày thuê"/>
 
     <TemplateColumn Context="nguoithue">
-        <a href="@($"nguoithues/edit?idnguoithue={nguoithue.IdNguoiThue}")">Edit</a> |
-        <a href="@($"nguoithues/details?idnguoithue={nguoithue.IdNguoiThue}")">Details</a> |
-        <a href="@($"nguoithues/delete?idnguoithue={nguoithue.IdNguoiThue}")">Delete</a>
+        <a href="@($"nguoithues/edit?idnguoithue={nguoithue.IdNguoiThue}")" class="text-decoration-none text-warning fw-medium">Sửa</a> |
+        <a href="@($"nguoithues/details?idnguoithue={nguoithue.IdNguoiThue}")" class="text-decoration-none text-warning fw-medium">Chi tiết</a> |
+        <a href="@($"nguoithues/delete?idnguoithue={nguoithue.IdNguoiThue}")" class="text-decoration-none text-warning fw-medium">Xóa</a>
     </TemplateColumn>
 </QuickGrid>

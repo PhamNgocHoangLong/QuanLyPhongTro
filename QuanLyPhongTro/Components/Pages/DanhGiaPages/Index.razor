@@ -5,21 +5,21 @@
 
 <PageTitle>Đánh Giá</PageTitle>
 
-<h1>Đánh Giá</h1>
+<h1 class="text-info">Danh Sách Đánh Giá</h1>
 
 <p>
-    <a href="danhgia/create">Create New</a>
+    <a href="danhgia/create" class="btn btn-primary">Tạo mới</a>
 </p>
 
 <QuickGrid Class="table" Items="DB.DanhGia">
-    <PropertyColumn Property="danhgia => danhgia.NgayDanhGia" />
-    <PropertyColumn Property="danhgia => danhgia.NoiDung" />
-    <PropertyColumn Property="danhgia => danhgia.MaNguoiDanhGia" />
-    <PropertyColumn Property="danhgia => danhgia.MaPhongTro" />
+    <PropertyColumn Property="danhgia => danhgia.NgayDanhGia" Title="Ngày đánh giá"/>
+    <PropertyColumn Property="danhgia => danhgia.NoiDung" Title="Nội dung"/>
+    <PropertyColumn Property="danhgia => danhgia.MaNguoiDanhGia" Title="Mã đánh giá"/>
+    <PropertyColumn Property="danhgia => danhgia.MaPhongTro" Title="Mã phòng trọ"/>
 
     <TemplateColumn Context="danhgia">
-        <a href="@($"danhgia/edit?madanhgia={danhgia.MaDanhGia}")">Edit</a> |
-        <a href="@($"danhgia/details?madanhgia={danhgia.MaDanhGia}")">Details</a> |
-        <a href="@($"danhgia/delete?madanhgia={danhgia.MaDanhGia}")">Delete</a>
+        <a href="@($"danhgia/edit?madanhgia={danhgia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Sửa</a> |
+        <a href="@($"danhgia/details?madanhgia={danhgia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Chi tiết</a> |
+        <a href="@($"danhgia/delete?madanhgia={danhgia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Xóa</a>
     </TemplateColumn>
 </QuickGrid>

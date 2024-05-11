@@ -4,11 +4,9 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Edit</PageTitle>
+<PageTitle>Sửa người thuê</PageTitle>
 
-<h1>Edit</h1>
-
-<h4>NguoiThue</h4>
+<h1 class="text-danger-emphasis fw-bold text-center">Sửa thông tin người thuê</h1>
 <hr />
 @if (NguoiThue is null)
 {
@@ -17,55 +15,57 @@
 else
 {
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <EditForm method="post" Model="NguoiThue" OnValidSubmit="UpdateNguoiThue" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <input type="hidden" name="NguoiThue.IdNguoiThue" value="@NguoiThue.IdNguoiThue" />
                 <div class="mb-3">
-                    <label for="maphongtro" class="form-label">MaPhongTro:</label>
+                    <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label>
                     <InputText id="maphongtro" @bind-Value="NguoiThue.MaPhongTro" class="form-control" />
                     <ValidationMessage For="() => NguoiThue.MaPhongTro" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="hovaten" class="form-label">HoVaTen:</label>
+                    <label for="hovaten" class="form-label text-primary fw-medium">Họ tn</label>
                     <InputText id="hovaten" @bind-Value="NguoiThue.HoVaTen" class="form-control" />
                     <ValidationMessage For="() => NguoiThue.HoVaTen" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="sdt" class="form-label">Sdt:</label>
+                    <label for="sdt" class="form-label text-primary fw-medium">SĐT</label>
                     <InputText id="sdt" @bind-Value="NguoiThue.Sdt" class="form-control" />
                     <ValidationMessage For="() => NguoiThue.Sdt" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="gioitinh" class="form-label">GioiTinh:</label>
+                    <label for="gioitinh" class="form-label text-primary fw-medium">Giới tính</label>
                     <InputCheckbox id="gioitinh" @bind-Value="NguoiThue.GioiTinh" class="form-check-input" />
                     <ValidationMessage For="() => NguoiThue.GioiTinh" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">email:</label>
+                    <label for="email" class="form-label text-primary fw-medium">Email</label>
                     <InputText id="email" @bind-Value="NguoiThue.email" class="form-control" />
                     <ValidationMessage For="() => NguoiThue.email" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="ngaysinh" class="form-label">NgaySinh:</label>
+                    <label for="ngaysinh" class="form-label text-primary fw-medium">Ngày sinh</label>
                     <InputDate id="ngaysinh" @bind-Value="NguoiThue.NgaySinh" class="form-control" />
                     <ValidationMessage For="() => NguoiThue.NgaySinh" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="ngaydk" class="form-label">NgayDK:</label>
+                    <label for="ngaydk" class="form-label text-primary fw-medium">Ngày thuê</label>
                     <InputDate id="ngaydk" @bind-Value="NguoiThue.NgayDK" class="form-control" />
                     <ValidationMessage For="() => NguoiThue.NgayDK" class="text-danger" />
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div>
+                    <button type="submit" class="btn btn-primary px-4 my-3 me-3">Lưu</button>
+                    <a href="/nguoithues" class="text-decoration-none">Quay lại</a>
+                </div>
+                
             </EditForm>
         </div>
     </div>
 }
 
-<div>
-    <a href="/nguoithues">Back to List</a>
-</div>
+
 
 @code {
     [SupplyParameterFromQuery]

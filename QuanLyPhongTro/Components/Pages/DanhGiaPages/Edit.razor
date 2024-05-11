@@ -4,11 +4,9 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Edit</PageTitle>
+<PageTitle>Sửa đánh giá</PageTitle>
 
-<h1>Edit</h1>
-
-<h4>DanhGia</h4>
+<h1 class="text-danger-emphasis fw-bold text-center">Sửa đánh giá</h1>
 <hr />
 @if (DanhGia is null)
 {
@@ -17,40 +15,42 @@
 else
 {
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <EditForm method="post" Model="DanhGia" OnValidSubmit="UpdateDanhGia" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <input type="hidden" name="DanhGia.MaDanhGia" value="@DanhGia.MaDanhGia" />
                 <div class="mb-3">
-                    <label for="ngaydanhgia" class="form-label">NgayDanhGia:</label>
+                    <label for="ngaydanhgia" class="form-label text-primary fw-medium">Ngày ánh giá</label>
                     <InputDate id="ngaydanhgia" @bind-Value="DanhGia.NgayDanhGia" class="form-control" />
                     <ValidationMessage For="() => DanhGia.NgayDanhGia" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="noidung" class="form-label">NoiDung:</label>
+                    <label for="noidung" class="form-label text-primary fw-medium">Nội dung</label>
                     <InputText id="noidung" @bind-Value="DanhGia.NoiDung" class="form-control" />
                     <ValidationMessage For="() => DanhGia.NoiDung" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="manguoidanhgia" class="form-label">MaNguoiDanhGia:</label>
+                    <label for="manguoidanhgia" class="form-label text-primary fw-medium">Mã đánh giá</label>
                     <InputNumber id="manguoidanhgia" @bind-Value="DanhGia.MaNguoiDanhGia" class="form-control" />
                     <ValidationMessage For="() => DanhGia.MaNguoiDanhGia" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="maphongtro" class="form-label">MaPhongTro:</label>
+                    <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label>
                     <InputNumber id="maphongtro" @bind-Value="DanhGia.MaPhongTro" class="form-control" />
                     <ValidationMessage For="() => DanhGia.MaPhongTro" class="text-danger" />
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <div>
+                    <button type="submit" class="btn btn-primary px-4 my-3 me-3">Lưu</button>
+                    <a href="/danhgia" class="text-decoration-none">Quay lại</a>
+                </div>
+                
             </EditForm>
         </div>
     </div>
 }
 
-<div>
-    <a href="/danhgia">Back to List</a>
-</div>
+
 
 @code {
     [SupplyParameterFromQuery]

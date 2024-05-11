@@ -4,12 +4,11 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Details</PageTitle>
+<PageTitle>Chi tiết</PageTitle>
 
-<h1>Details</h1>
+<h1 class="text-danger-emphasis fw-bold text-center">Chi tiết người thuê</h1>
 
 <div>
-    <h4>NguoiThue</h4>
     <hr />
     @if (nguoithue is null)
     {
@@ -17,24 +16,24 @@
     }
     else {
         <dl class="row">
-            <dt class="col-sm-2">MaPhongTro</dt>
+            <dt class="col-sm-2 text-primary">Mã phòng trọ</dt>
             <dd class="col-sm-10">@nguoithue.MaPhongTro</dd>
-            <dt class="col-sm-2">HoVaTen</dt>
+            <dt class="col-sm-2 text-primary">Họ tên</dt>
             <dd class="col-sm-10">@nguoithue.HoVaTen</dd>
-            <dt class="col-sm-2">Sdt</dt>
+            <dt class="col-sm-2 text-primary">SĐT</dt>
             <dd class="col-sm-10">@nguoithue.Sdt</dd>
-            <dt class="col-sm-2">GioiTinh</dt>
+            <dt class="col-sm-2 text-primary">Giới tính</dt>
             <dd class="col-sm-10">@nguoithue.GioiTinh</dd>
-            <dt class="col-sm-2">email</dt>
+            <dt class="col-sm-2 text-primary">Email</dt>
             <dd class="col-sm-10">@nguoithue.email</dd>
-            <dt class="col-sm-2">NgaySinh</dt>
+            <dt class="col-sm-2 text-primary">Ngày sinh</dt>
             <dd class="col-sm-10">@nguoithue.NgaySinh</dd>
-            <dt class="col-sm-2">NgayDK</dt>
+            <dt class="col-sm-2 text-primary">Ngày thuê</dt>
             <dd class="col-sm-10">@nguoithue.NgayDK</dd>
         </dl>
         <div>
-            <a href="@($"/nguoithues/edit?idnguoithue={nguoithue.IdNguoiThue}")">Edit</a> |
-            <a href="@($"/nguoithues")">Back to List</a>
+            <a href="@($"/nguoithues/edit?idnguoithue={nguoithue.IdNguoiThue}")" class="btn btn-primary px-4 me-3">Sửa</a>
+            <a href="@($"/nguoithues")" class="btn btn-primary">Quay lại</a>
         </div>
     }
 </div>

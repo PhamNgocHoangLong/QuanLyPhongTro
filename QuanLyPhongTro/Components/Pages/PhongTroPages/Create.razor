@@ -3,65 +3,65 @@
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
 
-<PageTitle>Create</PageTitle>
+<PageTitle>Thêm phòng trọ</PageTitle>
 
-<h1>Create</h1>
-
-<h4>PhongTro</h4>
+<h1 class="text-danger-emphasis fw-bold text-center">Thêm phòng trọ mới</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <EditForm method="post" Model="PhongTro" OnValidSubmit="AddPhongTro" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
-                <label for="machutro" class="form-label">MaChuTro:</label> 
+                <label for="machutro" class="form-label text-primary fw-medium">Mã chủ trọ:</label>
                 <InputNumber id="machutro" @bind-Value="PhongTro.MaChuTro" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.MaChuTro" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="tenchutro" class="form-label">TenChuTro:</label> 
+                <label for="tenchutro" class="form-label text-primary fw-medium">Tên chủ trọ:</label>
                 <InputText id="tenchutro" @bind-Value="PhongTro.TenChuTro" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.TenChuTro" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="diachitro" class="form-label">DiaChiTro:</label> 
+                <label for="diachitro" class="form-label text-primary fw-medium">Địa chỉ trọ:</label>
                 <InputText id="diachitro" @bind-Value="PhongTro.DiaChiTro" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.DiaChiTro" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="trangthai" class="form-label">TrangThai:</label> 
+                <label for="trangthai" class="form-label text-primary fw-medium">Trạng thái:</label>
                 <InputCheckbox id="trangthai" @bind-Value="PhongTro.TrangThai" class="form-check-input" /> 
                 <ValidationMessage For="() => PhongTro.TrangThai" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="dientich" class="form-label">DienTich:</label> 
+                <label for="dientich" class="form-label text-primary fw-medium">Diện tích:</label>
                 <InputNumber id="dientich" @bind-Value="PhongTro.DienTich" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.DienTich" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="gia" class="form-label">Gia:</label> 
+                <label for="gia" class="form-label text-primary fw-medium">Giá trọ:</label>
                 <InputNumber id="gia" @bind-Value="PhongTro.Gia" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.Gia" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="ngaydang" class="form-label">NgayDang:</label> 
+                <label for="ngaydang" class="form-label text-primary fw-medium">Ngày đăng:</label>
                 <InputDate id="ngaydang" @bind-Value="PhongTro.NgayDang" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.NgayDang" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="chitiet" class="form-label">ChiTiet:</label> 
+                <label for="chitiet" class="form-label text-primary fw-medium">Chi tiết:</label>
                 <InputText id="chitiet" @bind-Value="PhongTro.ChiTiet" class="form-control" /> 
                 <ValidationMessage For="() => PhongTro.ChiTiet" class="text-danger" /> 
-            </div>        
-            <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+            <div class="my-3">
+                <button type="submit" class="btn btn-primary me-3 px-4">Tạo</button>
+                <a href="/phongtros" class="text-decoration-none">Quay lại</a>
+            </div>
+            
         </EditForm>
     </div>
 </div>
 
-<div>
-    <a href="/phongtros">Back to List</a>
-</div>
+
 
 @code {
 

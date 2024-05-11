@@ -4,12 +4,11 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Details</PageTitle>
+<PageTitle>Chi tiết đánh giá</PageTitle>
 
-<h1>Details</h1>
+<h1 class="text-danger-emphasis fw-bold text-center">Chi tiết đánh giá</h1>
 
 <div>
-    <h4>DanhGia</h4>
     <hr />
     @if (danhgia is null)
     {
@@ -17,18 +16,18 @@
     }
     else {
         <dl class="row">
-            <dt class="col-sm-2">NgayDanhGia</dt>
+            <dt class="col-sm-2 text-primary">Ngày đánh giá</dt>
             <dd class="col-sm-10">@danhgia.NgayDanhGia</dd>
-            <dt class="col-sm-2">NoiDung</dt>
+            <dt class="col-sm-2 text-primary">Nội dung</dt>
             <dd class="col-sm-10">@danhgia.NoiDung</dd>
-            <dt class="col-sm-2">MaNguoiDanhGia</dt>
+            <dt class="col-sm-2 text-primary">Mã đánh gi</dt>
             <dd class="col-sm-10">@danhgia.MaNguoiDanhGia</dd>
-            <dt class="col-sm-2">MaPhongTro</dt>
+            <dt class="col-sm-2 text-primary">Mã phòng trọ</dt>
             <dd class="col-sm-10">@danhgia.MaPhongTro</dd>
         </dl>
         <div>
-            <a href="@($"/danhgia/edit?madanhgia={danhgia.MaDanhGia}")">Edit</a> |
-            <a href="@($"/danhgia")">Back to List</a>
+            <a href="@($"/danhgia/edit?madanhgia={danhgia.MaDanhGia}")" class="btn btn-primary px-4 me-3">Sửa</a>
+            <a href="@($"/danhgia")" class="btn btn-primary">Quay lại</a>
         </div>
     }
 </div>
