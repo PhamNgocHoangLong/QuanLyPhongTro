@@ -4,12 +4,11 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
 
-<PageTitle>Details</PageTitle>
+<PageTitle>Chi tiết thuê</PageTitle>
 
-<h1>Details</h1>
+<h1 class="text-danger-emphasis fw-bold text-center">Chi tiết thuê</h1>
 
 <div>
-    <h4>ChiTietThue</h4>
     <hr />
     @if (chitietthue is null)
     {
@@ -17,18 +16,18 @@
     }
     else {
         <dl class="row">
-            <dt class="col-sm-2">MaChuTro</dt>
+            <dt class="col-sm-2 text-primary">Mã chủ trọ</dt>
             <dd class="col-sm-10">@chitietthue.MaChuTro</dd>
-            <dt class="col-sm-2">MaNguoiThue</dt>
+            <dt class="col-sm-2 text-primary">Mã người thuê</dt>
             <dd class="col-sm-10">@chitietthue.MaNguoiThue</dd>
-            <dt class="col-sm-2">ThoiGianThue</dt>
+            <dt class="col-sm-2 text-primary">Ngày thuê</dt>
             <dd class="col-sm-10">@chitietthue.ThoiGianThue</dd>
-            <dt class="col-sm-2">DiaChiThue</dt>
+            <dt class="col-sm-2 text-primary">Địa chỉ thuê</dt>
             <dd class="col-sm-10">@chitietthue.DiaChiThue</dd>
         </dl>
         <div>
-            <a href="@($"/chitietthues/edit?machitietthue={chitietthue.MaChiTietThue}")">Edit</a> |
-            <a href="@($"/chitietthues")">Back to List</a>
+            <a href="@($"/chitietthues/edit?machitietthue={chitietthue.MaChiTietThue}")" class="btn btn-primary px-4 me-3">Sửa</a>
+            <a href="@($"/chitietthues")" class="btn btn-primary">Quay lại</a>
         </div>
     }
 </div>

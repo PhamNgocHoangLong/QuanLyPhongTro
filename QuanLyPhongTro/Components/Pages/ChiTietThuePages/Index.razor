@@ -5,21 +5,21 @@
 
 <PageTitle>Chi Tiết Thuê</PageTitle>
 
-<h1>Chi Tiết Thuê</h1>
+<h1 class="text-info">Danh Sách Chi Tiết Thuê</h1>
 
 <p>
-    <a href="chitietthues/create">Create New</a>
+    <a href="chitietthues/create" class="btn btn-primary">Tạo mới</a>
 </p>
 
 <QuickGrid Class="table" Items="DB.ChiTietThue">
-    <PropertyColumn Property="chitietthue => chitietthue.MaChuTro" />
-    <PropertyColumn Property="chitietthue => chitietthue.MaNguoiThue" />
-    <PropertyColumn Property="chitietthue => chitietthue.ThoiGianThue" />
-    <PropertyColumn Property="chitietthue => chitietthue.DiaChiThue" />
+    <PropertyColumn Property="chitietthue => chitietthue.MaChuTro" Title="Mã chủ trọ"/>
+    <PropertyColumn Property="chitietthue => chitietthue.MaNguoiThue" Title="Mã người thuê"/>
+    <PropertyColumn Property="chitietthue => chitietthue.ThoiGianThue" Title="Ngày thuê"/>
+    <PropertyColumn Property="chitietthue => chitietthue.DiaChiThue" Title="Địa chỉ thuê"/>
 
     <TemplateColumn Context="chitietthue">
-        <a href="@($"chitietthues/edit?machitietthue={chitietthue.MaChiTietThue}")">Edit</a> |
-        <a href="@($"chitietthues/details?machitietthue={chitietthue.MaChiTietThue}")">Details</a> |
-        <a href="@($"chitietthues/delete?machitietthue={chitietthue.MaChiTietThue}")">Delete</a>
+        <a href="@($"chitietthues/edit?machitietthue={chitietthue.MaChiTietThue}")" class="text-decoration-none text-warning fw-medium">Sửa</a> |
+        <a href="@($"chitietthues/details?machitietthue={chitietthue.MaChiTietThue}")" class="text-decoration-none text-warning fw-medium">Chi tiết</a> |
+        <a href="@($"chitietthues/delete?machitietthue={chitietthue.MaChiTietThue}")" class="text-decoration-none text-warning fw-medium">Xóa</a>
     </TemplateColumn>
 </QuickGrid>
