@@ -1,32 +1,64 @@
 ﻿@page "/nguoithues/create"
 @inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using Microsoft.EntityFrameworkCore
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
+@inject IServiceProvider ServiceProvider
 
+@code {
+    private List<(string MaPhongTro, bool TrangThai)> phongTroList = new List<(string MaPhongTro, bool TrangThai)>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var DBContext = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+
+            var phongTros = await DBContext.PhongTro.ToListAsync();
+
+            foreach (var phongTro in phongTros)
+            {
+               phongTroList.Add((phongTro.MaPhongTro, phongTro.TrangThai));
+            }
+        }
+    }
+}
 <PageTitle>Thêm người thuê</PageTitle>
 
 <h1 class="text-danger-emphasis fw-bold text-center">Tạo mới người thuê</h1>
 <hr />
-<div class="row">
+@if (phongTroList != null)
+{
+    <div class="row">
     <div class="col-md-12">
         <EditForm method="post" Model="NguoiThue" OnValidSubmit="AddNguoiThue" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
-                <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label> 
-                <InputText id="maphongtro" @bind-Value="NguoiThue.MaPhongTro" class="form-control" /> 
+                <label for="manguoithue" class="form-label text-primary fw-medium">Mã phòng trọ</label> 
+                <InputSelect id="manguoithue" @bind-Value="NguoiThue.MaPhongTro" class="form-control">
+                    @foreach (var item in phongTroList)
+                    {
+                        <option disabled="@(!item.TrangThai)" value="@item.MaPhongTro">@item.MaPhongTro</option>
+                    }
+                </InputSelect>
                 <ValidationMessage For="() => NguoiThue.MaPhongTro" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="hovaten" class="form-label text-primary fw-medium">Họ tên</label> 
-                <InputText id="hovaten" @bind-Value="NguoiThue.HoVaTen" class="form-control" /> 
-                <ValidationMessage For="() => NguoiThue.HoVaTen" class="text-danger" /> 
+                <InputText id="hovaten" @bind-Value="NguoiThue.HoTen" class="form-control" /> 
+                <ValidationMessage For="() => NguoiThue.HoTen" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="sdt" class="form-label text-primary fw-medium">SĐT</label> 
-                <InputText id="sdt" @bind-Value="NguoiThue.Sdt" class="form-control" /> 
-                <ValidationMessage For="() => NguoiThue.Sdt" class="text-danger" /> 
-            </div>        
+                <InputText id="sdt" @bind-Value="NguoiThue.SDT" class="form-control" /> 
+                <ValidationMessage For="() => NguoiThue.SDT" class="text-danger" /> 
+            </div>
+            <div class="mb-3">
+                <label for="sdt" class="form-label text-primary fw-medium">Mật khẩu</label>
+                <InputText type="password" id="sdt" @bind-Value="NguoiThue.MatKhau" class="form-control" />
+                <ValidationMessage For="() => NguoiThue.MatKhau" class="text-danger" />
+            </div>
             <div class="mb-3">
                 <label for="gioitinh" class="form-label text-primary fw-medium">Giới tính</label> 
                 <InputCheckbox id="gioitinh" @bind-Value="NguoiThue.GioiTinh" class="form-check-input" /> 
@@ -34,8 +66,8 @@
             </div>        
             <div class="mb-3">
                 <label for="email" class="form-label text-primary fw-medium">Email</label> 
-                <InputText id="email" @bind-Value="NguoiThue.email" class="form-control" /> 
-                <ValidationMessage For="() => NguoiThue.email" class="text-danger" /> 
+                <InputText id="email" @bind-Value="NguoiThue.Email" class="form-control" /> 
+                <ValidationMessage For="() => NguoiThue.Email" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="ngaysinh" class="form-label text-primary fw-medium">Ngày sinh</label> 
@@ -55,18 +87,37 @@
         </EditForm>
     </div>
 </div>
+}
 
 
 
 @code {
 
     [SupplyParameterFromForm]
-    public NguoiThue NguoiThue { get; set; } = new();
+    public NguoiThue NguoiThue { get; set; } = new() {NgayDK = DateTime.Now, NgaySinh = DateTime.Now};
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddNguoiThue()
     {
+        var lastNguoiThue = await DB.NguoiThue.OrderByDescending(p => p.MaNgThue).FirstOrDefaultAsync();
+        if (lastNguoiThue == null)
+        {
+            NguoiThue.MaNgThue = "NT1";
+        }
+        else
+        {
+            var lastNumber = int.Parse(lastNguoiThue.MaNgThue.Substring(2));
+            NguoiThue.MaNgThue = "NT" + (lastNumber + 1).ToString();
+        }
         DB.NguoiThue.Add(NguoiThue);
+        // Find the PhongTro entity that matches the MaPhongTro of the NguoiThue entity
+        var phongTro = await DB.PhongTro.FirstOrDefaultAsync(p => p.MaPhongTro == NguoiThue.MaPhongTro);
+        if (phongTro != null)
+        {
+            // Update the TrangThai property to false
+            phongTro.TrangThai = false;
+            DB.PhongTro.Update(phongTro);
+        }
         await DB.SaveChangesAsync();
         NavigationManager.NavigateTo("/nguoithues");
     }

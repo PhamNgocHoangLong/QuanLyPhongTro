@@ -1,7 +1,29 @@
 ﻿@page "/chitietthues/create"
 @inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using Microsoft.EntityFrameworkCore
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
+@inject IServiceProvider ServiceProvider
+
+@code
+{
+    private List<(string MaPhongTro, bool TrangThai)> phongTroList = new List<(string MaPhongTro, bool TrangThai)>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var DBContext = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+
+            var phongTros = await DBContext.PhongTro.ToListAsync();
+
+            foreach (var phongTro in phongTros)
+            {
+                phongTroList.Add((phongTro.MaPhongTro, phongTro.TrangThai));
+            }
+        }
+    }
+}
 
 <PageTitle>Create</PageTitle>
 
@@ -15,14 +37,19 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
-                <label for="machutro" class="form-label">MaChuTro:</label> 
-                <InputNumber id="machutro" @bind-Value="ChiTietThue.MaChuTro" class="form-control" /> 
-                <ValidationMessage For="() => ChiTietThue.MaChuTro" class="text-danger" /> 
+                <label for="machutro" class="form-label">MaPhong:</label> 
+                <InputSelect id="machutro" @bind-Value="ChiTietThue.MaPhong" class="form-control">
+                    @foreach (var item in phongTroList)
+                    {
+                        <option value="@item.MaPhongTro">@item.MaPhongTro</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => ChiTietThue.MaPhong" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="manguoithue" class="form-label">MaNguoiThue:</label> 
-                <InputNumber id="manguoithue" @bind-Value="ChiTietThue.MaNguoiThue" class="form-control" /> 
-                <ValidationMessage For="() => ChiTietThue.MaNguoiThue" class="text-danger" /> 
+                <InputText id="manguoithue" @bind-Value="ChiTietThue.MaNgThue" class="form-control" /> 
+                <ValidationMessage For="() => ChiTietThue.MaNgThue" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="thoigianthue" class="form-label">ThoiGianThue:</label> 
@@ -46,11 +73,21 @@
 @code {
 
     [SupplyParameterFromForm]
-    public ChiTietThue ChiTietThue { get; set; } = new();
+    public ChiTietThue ChiTietThue { get; set; } = new() {ThoiGianThue = DateTime.Now};
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddChiTietThue()
     {
+        var lastChiTietThue = await DB.ChiTietThue.OrderByDescending(p => p.MaChiTietThue).FirstOrDefaultAsync();
+        if (lastChiTietThue == null)
+        {
+            ChiTietThue.MaChiTietThue = "CT1";
+        }
+        else
+        {
+            var lastNumber = int.Parse(lastChiTietThue.MaChiTietThue.Substring(2));
+            ChiTietThue.MaChiTietThue = "CT" + (lastNumber + 1).ToString();
+        }
         DB.ChiTietThue.Add(ChiTietThue);
         await DB.SaveChangesAsync();
         NavigationManager.NavigateTo("/chitietthues");

@@ -1,7 +1,31 @@
 ﻿@page "/phongtros"
 @using Microsoft.AspNetCore.Components.QuickGrid
-@inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using Microsoft.EntityFrameworkCore
+@inject IServiceProvider ServiceProvider
 @using QuanLyPhongTro
+
+@code {
+    private List<PhongTroChuTroModel> phongTroWithChuTro = new List<PhongTroChuTroModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var DB = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+
+            var result = await DB.PhongTro
+                .Join(DB.ChuTro,
+                    phongTro => phongTro.MaCT, // Foreign key in PhongTro table
+                    chuTro => chuTro.MaCT, // Primary key in ChuTro table
+                    (phongTro, chuTro) => new PhongTroChuTroModel { PhongTro = phongTro, ChuTro = chuTro }) // Result selector
+                .OrderBy(item => item.PhongTro.MaPhongTro)
+                .ToListAsync();
+
+            phongTroWithChuTro = result;
+        }
+    }
+}
+
 
 <PageTitle>Phòng Trọ</PageTitle>
 
@@ -11,19 +35,26 @@
     <a href="phongtros/create">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="DB.PhongTro">
-    <PropertyColumn Property="phongtro => phongtro.MaCT" />
-    <PropertyColumn Property="phongtro => phongtro.TenCT" />
-    <PropertyColumn Property="phongtro => phongtro.DiaChi" />
-    <PropertyColumn Property="phongtro => phongtro.TrangThai" />
-    <PropertyColumn Property="phongtro => phongtro.DienTich" />
-    <PropertyColumn Property="phongtro => phongtro.Gia" />
-    <PropertyColumn Property="phongtro => phongtro.NgayDang" />
-    <PropertyColumn Property="phongtro => phongtro.MoTa" />
+@if (phongTroWithChuTro != null)
+{
+    <QuickGrid Class="table" Items="phongTroWithChuTro.AsQueryable()">
+        <PropertyColumn Property="item => item.PhongTro.MaPhongTro" Title="Mã phòng trọ" />
+        <PropertyColumn Property="item => item.ChuTro.HoTen" Title="Tên chủ trọ" />
+        <PropertyColumn Property="item => item.PhongTro.DiaChi" Title="Địa chỉ" />
+        <PropertyColumn Property='item => item.PhongTro.TrangThai ? "Còn trống" : "Đã được thuê" ' Title="Trạng thái" />
+        <PropertyColumn Property="item => item.PhongTro.DienTich" Title="Điện tích" />
+        <PropertyColumn Property="item => item.PhongTro.Gia" Title="Giá" />
+        <PropertyColumn Property="item => item.PhongTro.NgayDang" Title="Ngày Đăng" />
+        <PropertyColumn Property="item => item.PhongTro.MoTa" Title="Mô tả" />
 
-    <TemplateColumn Context="phongtro">
-        <a href="@($"phongtros/edit?maphongtro={phongtro.MaPhongTro}")">Edit</a> |
-        <a href="@($"phongtros/details?maphongtro={phongtro.MaPhongTro}")">Details</a> |
-        <a href="@($"phongtros/delete?maphongtro={phongtro.MaPhongTro}")">Delete</a>
-    </TemplateColumn>
-</QuickGrid>
+        <TemplateColumn Context="item">
+            <a href="@($"phongtros/edit?maphongtro={item.PhongTro.MaPhongTro}")">Edit</a> |
+            <a href="@($"phongtros/details?maphongtro={item.PhongTro.MaPhongTro}")">Details</a> |
+            <a href="@($"phongtros/delete?maphongtro={item.PhongTro.MaPhongTro}")">Delete</a>
+        </TemplateColumn>
+    </QuickGrid>
+}
+else
+{
+    <p>Loading...</p>
+}

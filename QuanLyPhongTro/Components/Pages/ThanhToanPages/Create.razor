@@ -1,5 +1,6 @@
 ﻿@page "/thanhtoans/create"
 @inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using Microsoft.EntityFrameworkCore
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
 
@@ -15,19 +16,19 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
-                <label for="maphongtro" class="form-label">MaPhongTro:</label> 
-                <InputNumber id="maphongtro" @bind-Value="ThanhToan.MaPhongTro" class="form-control" /> 
-                <ValidationMessage For="() => ThanhToan.MaPhongTro" class="text-danger" /> 
+                <label for="maphongtro" class="form-label">MaChiTietThue:</label> 
+                <InputText id="maphongtro" @bind-Value="ThanhToan.MaChiTietThue" class="form-control" /> 
+                <ValidationMessage For="() => ThanhToan.MaChiTietThue" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="ngaytratien" class="form-label">NgayTraTien:</label> 
-                <InputDate id="ngaytratien" @bind-Value="ThanhToan.NgayTraTien" class="form-control" /> 
-                <ValidationMessage For="() => ThanhToan.NgayTraTien" class="text-danger" /> 
+                <InputDate id="ngaytratien" @bind-Value="ThanhToan.NgayTT" class="form-control" /> 
+                <ValidationMessage For="() => ThanhToan.NgayTT" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="sotien" class="form-label">SoTien:</label> 
-                <InputNumber id="sotien" @bind-Value="ThanhToan.SoTien" class="form-control" /> 
-                <ValidationMessage For="() => ThanhToan.SoTien" class="text-danger" /> 
+                <InputNumber id="sotien" @bind-Value="ThanhToan.TongTien" class="form-control" /> 
+                <ValidationMessage For="() => ThanhToan.TongTien" class="text-danger" /> 
             </div>        
             <div class="mb-3">
                 <label for="phuongthuctt" class="form-label">PhuongThucTT:</label> 
@@ -46,11 +47,21 @@
 @code {
 
     [SupplyParameterFromForm]
-    public ThanhToan ThanhToan { get; set; } = new();
+    public ThanhToan ThanhToan { get; set; } = new() {NgayTT = DateTime.Now};
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddThanhToan()
     {
+        var lastThanhToan = await DB.ThanhToan.OrderByDescending(p => p.MaTT).FirstOrDefaultAsync();
+        if (lastThanhToan == null)
+        {
+            ThanhToan.MaTT = "TT1";
+        }
+        else
+        {
+            var lastNumber = int.Parse(lastThanhToan.MaTT.Substring(2));
+            ThanhToan.MaTT = "TT" + (lastNumber + 1).ToString();
+        }
         DB.ThanhToan.Add(ThanhToan);
         await DB.SaveChangesAsync();
         NavigationManager.NavigateTo("/thanhtoans");

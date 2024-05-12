@@ -3,6 +3,7 @@
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
 @using Microsoft.EntityFrameworkCore
+@inject IServiceProvider ServiceProvider
 
 <PageTitle>Edit</PageTitle>
 
@@ -23,14 +24,19 @@ else
                 <ValidationSummary />
                 <input type="hidden" name="ChiTietThue.MaChiTietThue" value="@ChiTietThue.MaChiTietThue" />
                 <div class="mb-3">
-                    <label for="machutro" class="form-label">MaChuTro:</label>
-                    <InputNumber id="machutro" @bind-Value="ChiTietThue.MaChuTro" class="form-control" />
-                    <ValidationMessage For="() => ChiTietThue.MaChuTro" class="text-danger" />
+                    <label for="machutro" class="form-label">Mã phòng trọ:</label>
+                    <InputSelect id="machutro" @bind-Value="ChiTietThue.MaPhong" class="form-control">
+                        @foreach (var item in phongTroList)
+                        {
+                            <option value="@item.MaPhongTro">@item.MaPhongTro</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="() => ChiTietThue.MaPhong" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="manguoithue" class="form-label">MaNguoiThue:</label>
-                    <InputNumber id="manguoithue" @bind-Value="ChiTietThue.MaNguoiThue" class="form-control" />
-                    <ValidationMessage For="() => ChiTietThue.MaNguoiThue" class="text-danger" />
+                    <InputText id="manguoithue" @bind-Value="ChiTietThue.MaNgThue" class="form-control" />
+                    <ValidationMessage For="() => ChiTietThue.MaNgThue" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="thoigianthue" class="form-label">ThoiGianThue:</label>
@@ -54,14 +60,29 @@ else
 
 @code {
     [SupplyParameterFromQuery]
-    public int MaChiTietThue { get; set; }
+    public string MaChiTietThue { get; set; }
+    private List<(string MaPhongTro, bool TrangThai)> phongTroList = new List<(string MaPhongTro, bool TrangThai)>();
 
     [SupplyParameterFromForm]
     public ChiTietThue? ChiTietThue { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        ChiTietThue ??= await DB.ChiTietThue.FirstOrDefaultAsync(m => m.MaChiTietThue == MaChiTietThue);
+        var scope = ServiceProvider.CreateScope();
+        var DBContext1 = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+        var phongTrosTask = DBContext1.PhongTro.ToListAsync();
+
+        var scope2 = ServiceProvider.CreateScope();
+        var DBContext2 = scope2.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+        var chiTietThueTask = DBContext2.ChiTietThue.FirstOrDefaultAsync(m => m.MaChiTietThue == MaChiTietThue);
+
+        await Task.WhenAll(phongTrosTask, chiTietThueTask);
+
+        foreach (var phongTro in phongTrosTask.Result)
+        {
+            phongTroList.Add((phongTro.MaPhongTro, phongTro.TrangThai));
+        }
+        ChiTietThue ??= chiTietThueTask.Result;
 
         if (ChiTietThue is null)
         {
@@ -94,7 +115,7 @@ else
         NavigationManager.NavigateTo("/chitietthues");
     }
 
-    bool ChiTietThueExists(int machitietthue)
+    bool ChiTietThueExists(string machitietthue)
     {
         return DB.ChiTietThue.Any(e => e.MaChiTietThue == machitietthue);
     }

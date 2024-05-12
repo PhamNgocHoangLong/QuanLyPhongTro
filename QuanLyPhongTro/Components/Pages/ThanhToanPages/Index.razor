@@ -12,14 +12,14 @@
 </p>
 
 <QuickGrid Class="table" Items="DB.ThanhToan">
-    <PropertyColumn Property="thanhtoan => thanhtoan.MaPhongTro" />
-    <PropertyColumn Property="thanhtoan => thanhtoan.NgayTraTien" />
-    <PropertyColumn Property="thanhtoan => thanhtoan.SoTien" />
+    <PropertyColumn Property="thanhtoan => thanhtoan.MaChiTietThue" />
+    <PropertyColumn Property="thanhtoan => thanhtoan.NgayTT" />
+    <PropertyColumn Property="thanhtoan => thanhtoan.TongTien" />
     <PropertyColumn Property="thanhtoan => thanhtoan.PhuongThucTT" />
 
     <TemplateColumn Context="thanhtoan">
-        <a href="@($"thanhtoans/edit?mathanhtoan={thanhtoan.MaThanhToan}")">Edit</a> |
-        <a href="@($"thanhtoans/details?mathanhtoan={thanhtoan.MaThanhToan}")">Details</a> |
-        <a href="@($"thanhtoans/delete?mathanhtoan={thanhtoan.MaThanhToan}")">Delete</a>
+        <a href="@($"thanhtoans/edit?mathanhtoan={thanhtoan.MaTT}")">Edit</a> |
+        <a href="@($"thanhtoans/details?mathanhtoan={thanhtoan.MaTT}")">Details</a> |
+        <a href="@($"thanhtoans/delete?mathanhtoan={thanhtoan.MaTT}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>

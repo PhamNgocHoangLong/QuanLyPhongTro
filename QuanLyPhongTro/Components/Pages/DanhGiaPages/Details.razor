@@ -17,30 +17,39 @@
     else {
         <dl class="row">
             <dt class="col-sm-2 text-primary">Ngày đánh giá</dt>
-            <dd class="col-sm-10">@danhgia.NgayDanhGia</dd>
-            <dt class="col-sm-2 text-primary">Nội dung</dt>
-            <dd class="col-sm-10">@danhgia.NoiDung</dd>
-            <dt class="col-sm-2 text-primary">Mã đánh gi</dt>
-            <dd class="col-sm-10">@danhgia.MaNguoiDanhGia</dd>
+            <dd class="col-sm-10">@danhgia.DanhGia.NgayDanhGia</dd>
+            <dt class="col-sm-2 text-primary">Mã người đánh giá</dt>
+            <dd class="col-sm-10">@danhgia.NguoiThue.MaNgThue</dd>
+            <dt class="col-sm-2 text-primary">Tên người đánh giá</dt>
+            <dd class="col-sm-10">@danhgia.NguoiThue.HoTen</dd>
             <dt class="col-sm-2 text-primary">Mã phòng trọ</dt>
-            <dd class="col-sm-10">@danhgia.MaPhongTro</dd>
+            <dd class="col-sm-10">@danhgia.DanhGia.MaPhongTro</dd>
+            <dt class="col-sm-2 text-primary">Nội dung</dt>
+            <dd class="col-sm-10">@danhgia.DanhGia.NoiDung  </dd>
         </dl>
         <div>
-            <a href="@($"/danhgia/edit?madanhgia={danhgia.MaDanhGia}")" class="btn btn-primary px-4 me-3">Sửa</a>
+            <a href="@($"/danhgia/edit?madanhgia={danhgia.DanhGia.MaDanhGia}")" class="btn btn-primary px-4 me-3">Sửa</a>
             <a href="@($"/danhgia")" class="btn btn-primary">Quay lại</a>
         </div>
     }
 </div>
 
 @code {
-    DanhGia? danhgia;
+    DanhGiaNguoiThueModel? danhgia;
 
     [SupplyParameterFromQuery]
-    public int MaDanhGia { get; set; }
+    public string MaDanhGia { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        danhgia = await DB.DanhGia.FirstOrDefaultAsync(m => m.MaDanhGia == MaDanhGia);
+        var result = await DB.DanhGia
+            .Join(DB.NguoiThue,
+                danhGia => danhGia.MaNgThue, // Foreign key in DanhGia table
+                nguoiThue => nguoiThue.MaNgThue, // Primary key in NguoiThue table
+                (danhgia, nguoiThue) => new DanhGiaNguoiThueModel { DanhGia = danhgia, NguoiThue = nguoiThue }) // Result selector
+            .FirstOrDefaultAsync(item => item.DanhGia.MaDanhGia == MaDanhGia);
+
+        danhgia = result;
 
         if (danhgia is null)
         {

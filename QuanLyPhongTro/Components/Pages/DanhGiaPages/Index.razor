@@ -1,7 +1,33 @@
 ﻿@page "/danhgia"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.EntityFrameworkCore
 @inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
 @using QuanLyPhongTro
+@inject IServiceProvider ServiceProvider
+
+
+@code {
+private List<DanhGiaNguoiThueModel> DanhGiaWithNguoiThue = new List<DanhGiaNguoiThueModel>();
+
+protected override async Task OnInitializedAsync()
+    {
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var DB = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+
+            var result = await DB.DanhGia
+                .Join(DB.NguoiThue,
+                    danhGia => danhGia.MaNgThue, // Foreign key in DanhGia table
+                    nguoiThue => nguoiThue.MaNgThue, // Primary key in NguoiThue table
+                    (danhgia, nguoiThue) => new DanhGiaNguoiThueModel { DanhGia = danhgia, NguoiThue = nguoiThue }) // Result selector
+                .OrderBy(item => item.DanhGia.NgayDanhGia)
+                .ToListAsync();
+
+            DanhGiaWithNguoiThue = result;
+        }
+    }
+}
+
 
 <PageTitle>Đánh Giá</PageTitle>
 
@@ -10,16 +36,24 @@
 <p>
     <a href="danhgia/create" class="btn btn-primary">Tạo mới</a>
 </p>
+ @if (DanhGiaWithNguoiThue != null)
+ {
+     
+     <QuickGrid Class="table" Items="DanhGiaWithNguoiThue.AsQueryable()">
+         <PropertyColumn Property="item => item.DanhGia.NgayDanhGia" Title="Ngày đánh giá"/>
+         <PropertyColumn Property="item => item.NguoiThue.MaNgThue" Title="Mã người đánh giá"/>
+         <PropertyColumn Property="item => item.NguoiThue.HoTen" Title="Tên người đánh giá"/>
+         <PropertyColumn Property="item => item.DanhGia.MaPhongTro" Title="Mã phòng trọ"/>
+         <PropertyColumn Property="item => item.DanhGia.NoiDung" Title="Nội dung"/>
 
-<QuickGrid Class="table" Items="DB.DanhGia">
-    <PropertyColumn Property="danhgia => danhgia.NgayDanhGia" Title="Ngày đánh giá"/>
-    <PropertyColumn Property="danhgia => danhgia.NoiDung" Title="Nội dung"/>
-    <PropertyColumn Property="danhgia => danhgia.MaNguoiDanhGia" Title="Mã đánh giá"/>
-    <PropertyColumn Property="danhgia => danhgia.MaPhongTro" Title="Mã phòng trọ"/>
-
-    <TemplateColumn Context="danhgia">
-        <a href="@($"danhgia/edit?madanhgia={danhgia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Sửa</a> |
-        <a href="@($"danhgia/details?madanhgia={danhgia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Chi tiết</a> |
-        <a href="@($"danhgia/delete?madanhgia={danhgia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Xóa</a>
-    </TemplateColumn>
-</QuickGrid>
+         <TemplateColumn Context="item">
+             <a href="@($"danhgia/edit?madanhgia={item.DanhGia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Sửa</a> |
+             <a href="@($"danhgia/details?madanhgia={item.DanhGia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Chi tiết</a> |
+             <a href="@($"danhgia/delete?madanhgia={item.DanhGia.MaDanhGia}")" class="text-decoration-none text-warning fw-medium">Xóa</a>
+         </TemplateColumn>
+     </QuickGrid>
+ }
+ else
+ {
+     <p>Loading...</p>
+ }

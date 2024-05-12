@@ -1,55 +1,111 @@
 ﻿@page "/danhgia/create"
 @inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using Microsoft.EntityFrameworkCore
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
+@inject IServiceProvider ServiceProvider
+
+@code {
+    private List<(string MaNguoiThue, string TenNguoiThue)> NguoiThueList = new List<(string MaNguoiThue, string TenNguoiThue)>();
+    private List<(string MaPhongTro, bool TrangThai)> phongTroList = new List<(string MaPhongTro, bool TrangThai)>();
+    protected override async Task OnInitializedAsync()
+    {
+        var scope = ServiceProvider.CreateScope();
+        var DBContext1 = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+        var phongTrosTask = DBContext1.PhongTro.ToListAsync();
+
+        var scope2 = ServiceProvider.CreateScope();
+        var DBContext2 = scope2.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+        var nguoiThuesTask = DBContext2.NguoiThue.ToListAsync();
+
+        await Task.WhenAll(phongTrosTask, nguoiThuesTask);
+
+        foreach (var phongTro in phongTrosTask.Result)
+        {
+            phongTroList.Add((phongTro.MaPhongTro, phongTro.TrangThai));
+        }
+
+        foreach (var nguoiThue in nguoiThuesTask.Result)
+        {
+            NguoiThueList.Add((nguoiThue.MaNgThue, nguoiThue.HoTen));
+        }
+    }
+}
 
 <PageTitle>Thêm đánh giá</PageTitle>
 
 <h1 class="text-danger-emphasis fw-bold text-center">Thêm đánh giá mới</h1>
 <hr />
-<div class="row">
-    <div class="col-md-12">
-        <EditForm method="post" Model="DanhGia" OnValidSubmit="AddDanhGia" FormName="create" Enhance>
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" />
-            <div class="mb-3">
-                <label for="ngaydanhgia" class="form-label text-primary fw-medium">Ngày đánh giá</label> 
-                <InputDate id="ngaydanhgia" @bind-Value="DanhGia.NgayDanhGia" class="form-control" /> 
-                <ValidationMessage For="() => DanhGia.NgayDanhGia" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="noidung" class="form-label text-primary fw-medium">Nội dung</label> 
-                <InputText id="noidung" @bind-Value="DanhGia.NoiDung" class="form-control" /> 
-                <ValidationMessage For="() => DanhGia.NoiDung" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="manguoidanhgia" class="form-label text-primary fw-medium">Mã đánh giá</label> 
-                <InputNumber id="manguoidanhgia" @bind-Value="DanhGia.MaNguoiDanhGia" class="form-control" /> 
-                <ValidationMessage For="() => DanhGia.MaNguoiDanhGia" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label> 
-                <InputNumber id="maphongtro" @bind-Value="DanhGia.MaPhongTro" class="form-control" /> 
-                <ValidationMessage For="() => DanhGia.MaPhongTro" class="text-danger" /> 
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary px-4 me-3">Tạo</button>
-                <a href="/danhgia" class="text-decoration-none">Quay lại</a>
-            </div>
-        </EditForm>
+@if (NguoiThueList != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <EditForm method="post" Model="DanhGia" OnValidSubmit="AddDanhGia" FormName="create" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" />
+                <div class="mb-3">
+                    <label for="ngaydanhgia" class="form-label text-primary fw-medium">Ngày đánh giá</label> 
+                    <InputDate id="ngaydanhgia" @bind-Value="DanhGia.NgayDanhGia" class="form-control" /> 
+                    <ValidationMessage For="() => DanhGia.NgayDanhGia" class="text-danger" /> 
+                </div>        
+                   
+                <div class="mb-3">
+                    <label for="manguoidanhgia" class="form-label text-primary fw-medium">Mã Người Đánh Giá</label> 
+                    <InputSelect id="manguoidanhgia" @bind-Value="DanhGia.MaNgThue" class="form-control">
+                        @foreach (var item in NguoiThueList)
+                        {
+                        <option value="@item.MaNguoiThue">@item.MaNguoiThue (@item.TenNguoiThue)</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="() => DanhGia.MaNgThue" class="text-danger" /> 
+                </div>
+                <div class="mb-3">
+                    <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label> 
+                    <InputSelect id="maphongtro" @bind-Value="DanhGia.MaPhongTro" class="form-control">
+                        @foreach (var item in phongTroList)
+                        {
+                        <option value="@item.MaPhongTro">@item.MaPhongTro</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="() => DanhGia.MaPhongTro" class="text-danger" /> 
+                </div>
+                <div class="mb-3">
+                    <label for="noidung" class="form-label text-primary fw-medium">Nội dung</label>
+                    <InputText id="noidung" @bind-Value="DanhGia.NoiDung" class="form-control" />
+                    <ValidationMessage For="() => DanhGia.NoiDung" class="text-danger" />
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary px-4 me-3">Tạo</button>
+                    <a href="/danhgia" class="text-decoration-none">Quay lại</a>
+                </div>
+            </EditForm>
+        </div>
     </div>
-</div>
 
+}
 
 
 @code {
 
     [SupplyParameterFromForm]
-    public DanhGia DanhGia { get; set; } = new();
+    public DanhGia DanhGia { get; set; } = new() {NgayDanhGia = DateTime.Now};
+   
+
+    public string tenNguoiDanhGia { get; set; }
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddDanhGia()
     {
+        var lastDanhGia = await DB.DanhGia.OrderByDescending(p => p.MaDanhGia).FirstOrDefaultAsync();
+        if (lastDanhGia == null)
+        {
+            DanhGia.MaDanhGia = "DG1";
+        }
+        else
+        {
+            var lastNumber = int.Parse(DanhGia.MaDanhGia.Substring(2));
+            DanhGia.MaDanhGia = "DG" + (lastNumber + 1).ToString();
+        }
         DB.DanhGia.Add(DanhGia);
         await DB.SaveChangesAsync();
         NavigationManager.NavigateTo("/danhgia");

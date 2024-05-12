@@ -19,7 +19,7 @@ else
             <EditForm method="post" Model="NguoiThue" OnValidSubmit="UpdateNguoiThue" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-                <input type="hidden" name="NguoiThue.IdNguoiThue" value="@NguoiThue.IdNguoiThue" />
+                <input type="hidden" name="NguoiThue.MaNgThue" value="@NguoiThue.MaNgThue" />
                 <div class="mb-3">
                     <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label>
                     <InputText id="maphongtro" @bind-Value="NguoiThue.MaPhongTro" class="form-control" />
@@ -27,13 +27,17 @@ else
                 </div>
                 <div class="mb-3">
                     <label for="hovaten" class="form-label text-primary fw-medium">Họ tn</label>
-                    <InputText id="hovaten" @bind-Value="NguoiThue.HoVaTen" class="form-control" />
-                    <ValidationMessage For="() => NguoiThue.HoVaTen" class="text-danger" />
+                    <InputText id="hovaten" @bind-Value="NguoiThue.HoTen" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.HoTen" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="sdt" class="form-label text-primary fw-medium">SĐT</label>
-                    <InputText id="sdt" @bind-Value="NguoiThue.Sdt" class="form-control" />
-                    <ValidationMessage For="() => NguoiThue.Sdt" class="text-danger" />
+                    <InputText id="sdt" @bind-Value="NguoiThue.SDT" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.SDT" class="text-danger" />
+                </div> <div class="mb-3">
+                    <label for="sdt" class="form-label text-primary fw-medium">Mật Khẩu</label>
+                    <InputText type="password" id="sdt" @bind-Value="NguoiThue.MatKhau" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.MatKhau" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="gioitinh" class="form-label text-primary fw-medium">Giới tính</label>
@@ -42,8 +46,8 @@ else
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label text-primary fw-medium">Email</label>
-                    <InputText id="email" @bind-Value="NguoiThue.email" class="form-control" />
-                    <ValidationMessage For="() => NguoiThue.email" class="text-danger" />
+                    <InputText id="email" @bind-Value="NguoiThue.Email" class="form-control" />
+                    <ValidationMessage For="() => NguoiThue.Email" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="ngaysinh" class="form-label text-primary fw-medium">Ngày sinh</label>
@@ -69,14 +73,14 @@ else
 
 @code {
     [SupplyParameterFromQuery]
-    public int IdNguoiThue { get; set; }
+    public string IdNguoiThue { get; set; }
 
     [SupplyParameterFromForm]
     public NguoiThue? NguoiThue { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        NguoiThue ??= await DB.NguoiThue.FirstOrDefaultAsync(m => m.IdNguoiThue == IdNguoiThue);
+        NguoiThue ??= await DB.NguoiThue.FirstOrDefaultAsync(m => m.MaNgThue == IdNguoiThue);
 
         if (NguoiThue is null)
         {
@@ -96,7 +100,7 @@ else
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!NguoiThueExists(NguoiThue!.IdNguoiThue))
+            if (!NguoiThueExists(NguoiThue!.MaNgThue))
             {
                 NavigationManager.NavigateTo("notfound");
             }
@@ -109,8 +113,8 @@ else
         NavigationManager.NavigateTo("/nguoithues");
     }
 
-    bool NguoiThueExists(int idnguoithue)
+    bool NguoiThueExists(string idnguoithue)
     {
-        return DB.NguoiThue.Any(e => e.IdNguoiThue == idnguoithue);
+        return DB.NguoiThue.Any(e => e.MaNgThue == idnguoithue);
     }
 }

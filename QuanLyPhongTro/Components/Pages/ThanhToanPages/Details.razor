@@ -17,17 +17,17 @@
     }
     else {
         <dl class="row">
-            <dt class="col-sm-2">MaPhongTro</dt>
-            <dd class="col-sm-10">@thanhtoan.MaPhongTro</dd>
+            <dt class="col-sm-2">MaChiTietThue</dt>
+            <dd class="col-sm-10">@thanhtoan.MaChiTietThue</dd>
             <dt class="col-sm-2">NgayTraTien</dt>
-            <dd class="col-sm-10">@thanhtoan.NgayTraTien</dd>
+            <dd class="col-sm-10">@thanhtoan.NgayTT</dd>
             <dt class="col-sm-2">SoTien</dt>
-            <dd class="col-sm-10">@thanhtoan.SoTien</dd>
+            <dd class="col-sm-10">@thanhtoan.TongTien</dd>
             <dt class="col-sm-2">PhuongThucTT</dt>
             <dd class="col-sm-10">@thanhtoan.PhuongThucTT</dd>
         </dl>
         <div>
-            <a href="@($"/thanhtoans/edit?mathanhtoan={thanhtoan.MaThanhToan}")">Edit</a> |
+            <a href="@($"/thanhtoans/edit?mathanhtoan={thanhtoan.MaTT}")">Edit</a> |
             <a href="@($"/thanhtoans")">Back to List</a>
         </div>
     }
@@ -37,11 +37,11 @@
     ThanhToan? thanhtoan;
 
     [SupplyParameterFromQuery]
-    public int MaThanhToan { get; set; }
+    public string MaThanhToan { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        thanhtoan = await DB.ThanhToan.FirstOrDefaultAsync(m => m.MaThanhToan == MaThanhToan);
+        thanhtoan = await DB.ThanhToan.FirstOrDefaultAsync(m => m.MaTT == MaThanhToan);
 
         if (thanhtoan is null)
         {

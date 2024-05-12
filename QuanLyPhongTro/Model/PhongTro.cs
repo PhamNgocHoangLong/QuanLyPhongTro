@@ -10,8 +10,6 @@ namespace QuanLyPhongTro
 
         public string MaCT { get; set; }
 
-        public string TenCT { get; set; }
-
         public string DiaChi { get; set; }
 
         public bool TrangThai { get; set; }

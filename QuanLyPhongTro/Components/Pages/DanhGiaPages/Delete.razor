@@ -18,19 +18,23 @@
     else {
         <dl class="row">
             <dt class="col-sm-2 text-primary">Ngày đánh giá</dt>
-            <dd class="col-sm-10">@danhgia.NgayDanhGia</dd>
+            <dd class="col-sm-10">@danhgia.DanhGia.NgayDanhGia</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Nội dung</dt>
-            <dd class="col-sm-10">@danhgia.NoiDung</dd>
+            <dt class="col-sm-2 text-primary">Mã người đánh giá</dt>
+            <dd class="col-sm-10">@danhgia.NguoiThue.MaNgThue</dd>
         </dl>
         <dl class="row">
-            <dt class="col-sm-2 text-primary">Mã đánh giá</dt>
-            <dd class="col-sm-10">@danhgia.MaNguoiDanhGia</dd>
+            <dt class="col-sm-2 text-primary">Tên người đánh giá</dt>
+            <dd class="col-sm-10">@danhgia.NguoiThue.HoTen</dd>
         </dl>
         <dl class="row">
             <dt class="col-sm-2 text-primary">Mã phòng trọ</dt>
-            <dd class="col-sm-10">@danhgia.MaPhongTro</dd>
+            <dd class="col-sm-10">@danhgia.DanhGia.MaPhongTro</dd>
+        </dl>
+          <dl class="row">
+            <dt class="col-sm-2 text-primary">Nội dung</dt>
+            <dd class="col-sm-10">@danhgia.DanhGia.NoiDung</dd>
         </dl>
         <EditForm method="post" Model="danhgia" OnValidSubmit="DeleteDanhGia" FormName="delete" Enhance>
             <button type="submit" class="btn btn-danger me-3 px-4" disabled="@(danhgia is null)">Xóa</button>
@@ -40,14 +44,21 @@
 </div>
 
 @code {
-    DanhGia? danhgia;
+    DanhGiaNguoiThueModel? danhgia;
 
     [SupplyParameterFromQuery]
-    public int MaDanhGia { get; set; }
+    public string MaDanhGia { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        danhgia = await DB.DanhGia.FirstOrDefaultAsync(m => m.MaDanhGia == MaDanhGia);
+        var result = await DB.DanhGia
+            .Join(DB.NguoiThue,
+                danhGia => danhGia.MaNgThue, // Foreign key in DanhGia table
+                nguoiThue => nguoiThue.MaNgThue, // Primary key in NguoiThue table
+                (danhgia, nguoiThue) => new DanhGiaNguoiThueModel { DanhGia = danhgia, NguoiThue = nguoiThue }) // Result selector
+            .FirstOrDefaultAsync(item => item.DanhGia.MaDanhGia == MaDanhGia);
+
+        danhgia = result;
 
         if (danhgia is null)
         {
@@ -57,7 +68,7 @@
 
     public async Task DeleteDanhGia()
     {
-        DB.DanhGia.Remove(danhgia!);
+        DB.DanhGia.Remove(danhgia.DanhGia);
         await DB.SaveChangesAsync();
         NavigationManager.NavigateTo("/danhgia");
     }

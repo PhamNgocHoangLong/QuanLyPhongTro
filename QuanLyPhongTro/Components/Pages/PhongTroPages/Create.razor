@@ -1,27 +1,46 @@
 ﻿@page "/phongtros/create"
 @inject QuanLyPhongTro.Data.QuanLyPhongTroContext DB
+@using Microsoft.EntityFrameworkCore
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
+@inject IServiceProvider ServiceProvider
+
+
+@code {
+    private List<string> maChuTroList = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var DBContext = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+
+            maChuTroList = await DBContext.ChuTro.Select(chuTro => chuTro.MaCT).ToListAsync();
+        }
+    }
+}
 
 <PageTitle>Thêm phòng trọ</PageTitle>
 
 <h1 class="text-danger-emphasis fw-bold text-center">Thêm phòng trọ mới</h1>
 <hr />
-<div class="row">
+@if (maChuTroList != null)
+{
+    <div class="row">
     <div class="col-md-12">
         <EditForm method="post" Model="PhongTro" OnValidSubmit="AddPhongTro" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
                 <label for="machutro" class="form-label text-primary fw-medium">Mã chủ trọ:</label>
-                <InputText id="machutro" @bind-Value="PhongTro.MaCT" class="form-control" /> 
+                <InputSelect id="machutro" @bind-Value="PhongTro.MaCT" class="form-control">
+                    @foreach (var maCT in maChuTroList)
+                    {
+                    <option value="@maCT">@maCT</option>
+                    }
+                </InputSelect>
                 <ValidationMessage For="() => PhongTro.MaCT" class="text-danger" /> 
-            </div>        
-            <div class="mb-3">
-                <label for="tenchutro" class="form-label text-primary fw-medium">Tên chủ trọ:</label>
-                <InputText id="tenchutro" @bind-Value="PhongTro.TenCT" class="form-control" /> 
-                <ValidationMessage For="() => PhongTro.TenCT" class="text-danger" /> 
-            </div>        
+            </div>
             <div class="mb-3">
                 <label for="diachitro" class="form-label text-primary fw-medium">Địa chỉ trọ:</label>
                 <InputText id="diachitro" @bind-Value="PhongTro.DiaChi" class="form-control" /> 
@@ -60,17 +79,28 @@
         </EditForm>
     </div>
 </div>
+}
 
 
 
 @code {
 
     [SupplyParameterFromForm]
-    public PhongTro PhongTro { get; set; } = new();
+    public PhongTro PhongTro { get; set; } = new() {NgayDang = DateTime.Now};
 
     // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
     public async Task AddPhongTro()
     {
+        var lastPhongTro = await DB.PhongTro.OrderByDescending(p => p.MaPhongTro).FirstOrDefaultAsync();
+        if (lastPhongTro == null)
+        {
+            PhongTro.MaPhongTro = "PT1";
+        }
+        else
+        {
+            var lastNumber = int.Parse(lastPhongTro.MaPhongTro.Substring(2));
+            PhongTro.MaPhongTro = "PT" + (lastNumber + 1).ToString();
+        }
         DB.PhongTro.Add(PhongTro);
         await DB.SaveChangesAsync();
         NavigationManager.NavigateTo("/phongtros");

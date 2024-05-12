@@ -21,25 +21,26 @@ else
                 <ValidationSummary />
                 <input type="hidden" name="DanhGia.MaDanhGia" value="@DanhGia.MaDanhGia" />
                 <div class="mb-3">
-                    <label for="ngaydanhgia" class="form-label text-primary fw-medium">Ngày ánh giá</label>
+                    <label for="ngaydanhgia" class="form-label text-primary fw-medium">Ngày Đánh giá</label>
                     <InputDate id="ngaydanhgia" @bind-Value="DanhGia.NgayDanhGia" class="form-control" />
                     <ValidationMessage For="() => DanhGia.NgayDanhGia" class="text-danger" />
                 </div>
+                <div class="mb-3">
+                    <label for="maphongtro" class="form-label text-primary fw-medium">Mã Người Đánh giá</label>
+                    <InputText id="maphongtro" @bind-Value="DanhGia.MaNgThue" class="form-control" />
+                    <ValidationMessage For="() => DanhGia.MaNgThue" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label>
+                    <InputText id="maphongtro" @bind-Value="DanhGia.MaPhongTro" class="form-control" />
+                    <ValidationMessage For="() => DanhGia.MaPhongTro" class="text-danger" />
+                </div> 
                 <div class="mb-3">
                     <label for="noidung" class="form-label text-primary fw-medium">Nội dung</label>
                     <InputText id="noidung" @bind-Value="DanhGia.NoiDung" class="form-control" />
                     <ValidationMessage For="() => DanhGia.NoiDung" class="text-danger" />
                 </div>
-                <div class="mb-3">
-                    <label for="manguoidanhgia" class="form-label text-primary fw-medium">Mã đánh giá</label>
-                    <InputNumber id="manguoidanhgia" @bind-Value="DanhGia.MaNguoiDanhGia" class="form-control" />
-                    <ValidationMessage For="() => DanhGia.MaNguoiDanhGia" class="text-danger" />
-                </div>
-                <div class="mb-3">
-                    <label for="maphongtro" class="form-label text-primary fw-medium">Mã phòng trọ</label>
-                    <InputNumber id="maphongtro" @bind-Value="DanhGia.MaPhongTro" class="form-control" />
-                    <ValidationMessage For="() => DanhGia.MaPhongTro" class="text-danger" />
-                </div>
+               
                 <div>
                     <button type="submit" class="btn btn-primary px-4 my-3 me-3">Lưu</button>
                     <a href="/danhgia" class="text-decoration-none">Quay lại</a>
@@ -54,7 +55,7 @@ else
 
 @code {
     [SupplyParameterFromQuery]
-    public int MaDanhGia { get; set; }
+    public string MaDanhGia { get; set; }
 
     [SupplyParameterFromForm]
     public DanhGia? DanhGia { get; set; }
@@ -94,7 +95,7 @@ else
         NavigationManager.NavigateTo("/danhgia");
     }
 
-    bool DanhGiaExists(int madanhgia)
+    bool DanhGiaExists(string madanhgia)
     {
         return DB.DanhGia.Any(e => e.MaDanhGia == madanhgia);
     }

@@ -21,21 +21,21 @@ else
             <EditForm method="post" Model="ThanhToan" OnValidSubmit="UpdateThanhToan" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary />
-                <input type="hidden" name="ThanhToan.MaThanhToan" value="@ThanhToan.MaThanhToan" />
+                <input type="hidden" name="ThanhToan.MaTT" value="@ThanhToan.MaTT" />
                 <div class="mb-3">
-                    <label for="maphongtro" class="form-label">MaPhongTro:</label>
-                    <InputNumber id="maphongtro" @bind-Value="ThanhToan.MaPhongTro" class="form-control" />
-                    <ValidationMessage For="() => ThanhToan.MaPhongTro" class="text-danger" />
+                    <label for="maphongtro" class="form-label">MaChiTietThue:</label>
+                    <InputText id="maphongtro" @bind-Value="ThanhToan.MaChiTietThue" class="form-control" />
+                    <ValidationMessage For="() => ThanhToan.MaChiTietThue" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="ngaytratien" class="form-label">NgayTraTien:</label>
-                    <InputDate id="ngaytratien" @bind-Value="ThanhToan.NgayTraTien" class="form-control" />
-                    <ValidationMessage For="() => ThanhToan.NgayTraTien" class="text-danger" />
+                    <InputDate id="ngaytratien" @bind-Value="ThanhToan.NgayTT" class="form-control" />
+                    <ValidationMessage For="() => ThanhToan.NgayTT" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="sotien" class="form-label">SoTien:</label>
-                    <InputNumber id="sotien" @bind-Value="ThanhToan.SoTien" class="form-control" />
-                    <ValidationMessage For="() => ThanhToan.SoTien" class="text-danger" />
+                    <InputNumber id="sotien" @bind-Value="ThanhToan.TongTien" class="form-control" />
+                    <ValidationMessage For="() => ThanhToan.TongTien" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="phuongthuctt" class="form-label">PhuongThucTT:</label>
@@ -54,14 +54,14 @@ else
 
 @code {
     [SupplyParameterFromQuery]
-    public int MaThanhToan { get; set; }
+    public string mathanhtoan { get; set; }
 
     [SupplyParameterFromForm]
     public ThanhToan? ThanhToan { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        ThanhToan ??= await DB.ThanhToan.FirstOrDefaultAsync(m => m.MaThanhToan == MaThanhToan);
+        ThanhToan ??= await DB.ThanhToan.FirstOrDefaultAsync(m => m.MaTT == mathanhtoan);
 
         if (ThanhToan is null)
         {
@@ -81,7 +81,7 @@ else
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!ThanhToanExists(ThanhToan!.MaThanhToan))
+            if (!ThanhToanExists(ThanhToan!.MaTT))
             {
                 NavigationManager.NavigateTo("notfound");
             }
@@ -94,8 +94,8 @@ else
         NavigationManager.NavigateTo("/thanhtoans");
     }
 
-    bool ThanhToanExists(int mathanhtoan)
+    bool ThanhToanExists(string mathanhtoan)
     {
-        return DB.ThanhToan.Any(e => e.MaThanhToan == mathanhtoan);
+        return DB.ThanhToan.Any(e => e.MaTT == mathanhtoan);
     }
 }

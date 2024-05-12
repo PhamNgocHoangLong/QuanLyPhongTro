@@ -14,6 +14,7 @@ namespace QuanLyPhongTro.Data
         {
         }
 
+        public DbSet<QuanLyPhongTro.ChuTro> ChuTro { get; set; } = default!;
         public DbSet<QuanLyPhongTro.Blog> Blog { get; set; } = default!;
         public DbSet<QuanLyPhongTro.NguoiThue> NguoiThue { get; set; } = default!;
         public DbSet<QuanLyPhongTro.PhongTro> PhongTro { get; set; } = default!;
