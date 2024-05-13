@@ -10,6 +10,8 @@ builder.Services.AddDbContext<QuanLyPhongTroContext>(options =>
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();;
 
+builder.Services.AddBlazorBootstrap();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
