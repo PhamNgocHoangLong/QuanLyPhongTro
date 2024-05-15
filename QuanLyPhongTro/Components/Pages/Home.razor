@@ -6,52 +6,65 @@
 @rendermode InteractiveServer
 
 
-<h1>Hello, world!</h1>
+<h1>Tìm Phòng Trọ</h1>
 
-Welcome to your new app.
+<h3>Nhập địa chỉ </h3>
 
 <!-- Search feature -->
 <div class="row mb-3">
-    <form class="w-100 d-flex gap-2 col-12">
-        <input type="text" @bind-value="searchLocation" class="form-control" placeholder="Recipient's username" aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @onclick="SearchPhongTro"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1)";><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg></button>
+    <form class="w-100 d-flex gap-2 col-12" @onsubmit="SearchPhongTro">
+        <input type="text" @bind-value="searchLocation" class="form-control" placeholder="Nhập Địa Chỉ" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1)";><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"></path></svg></button>
     </form>
 </div>
 
 <!-- Display search results -->
-@if (searchResults != null)
+@if (isSearching)
+{
+<p>Loading...</p>
+}
+else if (searchResults != null)
+{
+if (searchResults.Count != 0)
 {
 foreach (var phongTro in searchResults)
 {
-    <div class="row">
-        <div class="col-md-3 mb-3">
-            <Card Style="width: 100%;">
-                <CardBody>
-                    <CardTitle>@phongTro.MaCT</CardTitle>
-                    <CardText>
-                        <div>
-                            Địa chỉ: @phongTro.DiaChi
-                        </div>
-                        <div>
-                            Trạng thái: <span class="@(phongTro.TrangThai ? "text-danger" : "text-success")">@(phongTro.TrangThai ? "Đã thuê" : "Còn trống")</span>
-                        </div>
-                        <div>
-                            Diện tích: @phongTro.DienTich
-                        </div>
-                        <div>
-                            Giá: @phongTro.Gia
-                        </div>
-                    </CardText>
-                    <Button Color="ButtonColor.Primary" To="#" Type="ButtonType.Link">Xem phòng</Button>
-                </CardBody>
-            </Card>
-        </div>
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <Card Style="width: 100%;">
+            <CardBody>
+                <CardTitle>@phongTro.MaCT</CardTitle>
+                <CardText>
+                    <div>
+                        Địa chỉ: @phongTro.DiaChi
+                    </div>
+                    <div>
+                        Trạng thái: <span class="@(phongTro.TrangThai ? "text-danger" : "text-success")">@(phongTro.TrangThai ? "Đã thuê" : "Còn trống")</span>
+                    </div>
+                    <div>
+                        Diện tích: @phongTro.DienTich
+                    </div>
+                    <div>
+                        Giá: @phongTro.Gia
+                    </div>
+                </CardText>
+                <Button Color="ButtonColor.Primary" To="@($"phongtros/details?maphongtro={phongTro.MaPhongTro}")" Type="ButtonType.Link">Xem phòng</Button>
+            </CardBody>
+        </Card>
     </div>
+</div>
+}
+}
+else
+{
+<p>Không tìm thấy kết quả</p>
 }
 }
 
+
 @code {
     string searchLocation = string.Empty;
+    bool isSearching = false;
     List<PhongTro> searchResults;
 
     async Task SearchPhongTro()
@@ -59,12 +72,16 @@ foreach (var phongTro in searchResults)
         if (string.IsNullOrEmpty(searchLocation))
         {
             searchResults = new List<PhongTro>();
+            isSearching = false;
         }
         else
         {
+            isSearching = true;
             searchResults = await DB.PhongTro
                 .Where(pt => pt.DiaChi.Contains(searchLocation))
                 .ToListAsync();
+            isSearching = false;
+          
         }
     }
 

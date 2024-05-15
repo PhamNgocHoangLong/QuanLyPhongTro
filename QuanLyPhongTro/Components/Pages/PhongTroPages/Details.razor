@@ -16,27 +16,26 @@
         <p><em>Loading...</em></p>
     }
     else {
+        
         <dl class="row">
-            <dt class="col-sm-2">MaChuTro</dt>
+            <dt class="col-sm-2 text-primary">Mã chủ trọ</dt>
             <dd class="col-sm-10">@phongtro.MaCT</dd>
-            <dt class="col-sm-2">TenChuTro</dt>
-            @* <dd class="col-sm-10">@phongtro.TenCT</dd> *@
-            <dt class="col-sm-2">DiaChiTro</dt>
+            <dt class="col-sm-2 text-primary">Địa chỉ trọ</dt>
             <dd class="col-sm-10">@phongtro.DiaChi</dd>
-            <dt class="col-sm-2">TrangThai</dt>
-            <dd class="col-sm-10">@phongtro.TrangThai</dd>
-            <dt class="col-sm-2">DienTich</dt>
+            <dt class="col-sm-2 text-primary">Trạng thái</dt>
+            <dd class="col-sm-10">@(phongtro.TrangThai ? "Phòng trống" : "Đã được thuê")</dd>
+            <dt class="col-sm-2 text-primary">Diện tích</dt>
             <dd class="col-sm-10">@phongtro.DienTich</dd>
-            <dt class="col-sm-2">Gia</dt>
+            <dt class="col-sm-2 text-primary">Giá</dt>
             <dd class="col-sm-10">@phongtro.Gia</dd>
-            <dt class="col-sm-2">NgayDang</dt>
+            <dt class="col-sm-2 text-primary">Ngày đăng</dt>
             <dd class="col-sm-10">@phongtro.NgayDang</dd>
-            <dt class="col-sm-2">ChiTiet</dt>
+            <dt class="col-sm-2 text-primary">Chi tiết</dt>
             <dd class="col-sm-10">@phongtro.MoTa</dd>
         </dl>
         <div>
-            <a href="@($"/phongtros/edit?maphongtro={phongtro.MaPhongTro}")">Edit</a> |
-            <a href="@($"/phongtros")">Back to List</a>
+            <a href="@($"/phongtros/edit?maphongtro={phongtro.MaPhongTro}")" class="btn btn-primary px-4 me-3">Sửa</a>
+            <a href="@($"/phongtros")" class="btn btn-primary">Quay lại</a>
         </div>
     }
 </div>
