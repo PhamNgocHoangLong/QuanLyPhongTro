@@ -24,7 +24,7 @@ else
                 <input type="hidden" name="PhongTro.MaPhongTro" value="@PhongTro.MaPhongTro" />
                 <div class="mb-3">
                     <label for="machutro" class="form-label">MaChuTro:</label>
-                    <InputNumber id="machutro" @bind-Value="PhongTro.MaCT" class="form-control" />
+                    <InputText id="machutro" @bind-Value="PhongTro.MaCT" class="form-control" />
                     <ValidationMessage For="() => PhongTro.MaCT" class="text-danger" />
                 </div>
                 <div class="mb-3">
@@ -39,12 +39,12 @@ else
                 </div>
                 <div class="mb-3">
                     <label for="dientich" class="form-label">DienTich:</label>
-                    <InputNumber id="dientich" @bind-Value="PhongTro.DienTich" class="form-control" />
+                    <InputText id="dientich" @bind-Value="PhongTro.DienTich" class="form-control" />
                     <ValidationMessage For="() => PhongTro.DienTich" class="text-danger" />
                 </div>
                 <div class="mb-3">
                     <label for="gia" class="form-label">Gia:</label>
-                    <InputNumber id="gia" @bind-Value="PhongTro.Gia" class="form-control" />
+                    <InputText id="gia" @bind-Value="PhongTro.Gia" class="form-control" />
                     <ValidationMessage For="() => PhongTro.Gia" class="text-danger" />
                 </div>
                 <div class="mb-3">

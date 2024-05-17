@@ -3,6 +3,21 @@
 @using Microsoft.EntityFrameworkCore
 @using QuanLyPhongTro
 @inject NavigationManager NavigationManager
+@inject IServiceProvider ServiceProvider
+
+@code {
+private List<string> maChiTietThueList = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (var scope = ServiceProvider.CreateScope())
+        {
+            var DBContext = scope.ServiceProvider.GetRequiredService<QuanLyPhongTro.Data.QuanLyPhongTroContext>();
+
+            maChiTietThueList = await DBContext.ChiTietThue.Select(chitiet => chitiet.MaChiTietThue).ToListAsync();
+        }
+    }
+}
 
 <PageTitle>Create</PageTitle>
 
@@ -17,7 +32,12 @@
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
                 <label for="maphongtro" class="form-label">MaChiTietThue:</label> 
-                <InputText id="maphongtro" @bind-Value="ThanhToan.MaChiTietThue" class="form-control" /> 
+                <InputSelect id="maphongtro" @bind-Value="ThanhToan.MaChiTietThue" class="form-control">
+                    @foreach (var item in maChiTietThueList)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </InputSelect> 
                 <ValidationMessage For="() => ThanhToan.MaChiTietThue" class="text-danger" /> 
             </div>        
             <div class="mb-3">
