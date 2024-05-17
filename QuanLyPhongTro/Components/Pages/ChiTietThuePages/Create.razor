@@ -27,9 +27,8 @@
 
 <PageTitle>Create</PageTitle>
 
-<h1>Create</h1>
 
-<h4>ChiTietThue</h4>
+<h1 class="text-danger-emphasis fw-bold text-center">Chi tiết thuê</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -37,8 +36,8 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" />
             <div class="mb-3">
-                <label for="machutro" class="form-label">MaPhong:</label> 
-                <InputSelect id="machutro" @bind-Value="ChiTietThue.MaPhong" class="form-control">
+                <label for="machutro" class="form-label text-primary fw-medium">Mã phòng :</label>
+                <InputSelect id="machutro" @bind-Value="ChiTietThue.MaPhong" class="form-control ">
                     @foreach (var item in phongTroList)
                     {
                         <option value="@item.MaPhongTro">@item.MaPhongTro</option>
@@ -47,27 +46,27 @@
                 <ValidationMessage For="() => ChiTietThue.MaPhong" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="manguoithue" class="form-label">MaNguoiThue:</label> 
-                <InputText id="manguoithue" @bind-Value="ChiTietThue.MaNgThue" class="form-control" /> 
+                <label for="manguoithue" class="form-label text-primary fw-medium" >Mã người thuê :</label>
+                <InputText id="manguoithue" @bind-Value="ChiTietThue.MaNgThue" class="form-control text-primary fw-medium" /> 
                 <ValidationMessage For="() => ChiTietThue.MaNgThue" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="thoigianthue" class="form-label">ThoiGianThue:</label> 
+                <label for="thoigianthue" class="form-label text-primary fw-medium">Thời gian thuê :</label>
                 <InputDate id="thoigianthue" @bind-Value="ChiTietThue.ThoiGianThue" class="form-control" /> 
                 <ValidationMessage For="() => ChiTietThue.ThoiGianThue" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="diachithue" class="form-label">DiaChiThue:</label> 
+                <label for="diachithue" class="form-label text-primary fw-medium">Địa chỉ thuê:</label>
                 <InputText id="diachithue" @bind-Value="ChiTietThue.DiaChiThue" class="form-control" /> 
                 <ValidationMessage For="() => ChiTietThue.DiaChiThue" class="text-danger" /> 
             </div>        
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Tạo</button>
         </EditForm>
     </div>
 </div>
 
 <div>
-    <a href="/chitietthues">Back to List</a>
+    <a href="/chitietthues">Quay lại </a>
 </div>
 
 @code {

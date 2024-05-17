@@ -5,11 +5,10 @@
 @using Microsoft.EntityFrameworkCore
 @inject IServiceProvider ServiceProvider
 
-<PageTitle>Edit</PageTitle>
+<PageTitle>Sửa chi tiết thuê</PageTitle>
 
-<h1>Edit</h1>
+<h1 class="text-center">Sửa chi tiết thuê</h1>
 
-<h4>ChiTietThue</h4>
 <hr />
 @if (ChiTietThue is null)
 {
@@ -24,7 +23,7 @@ else
                 <ValidationSummary />
                 <input type="hidden" name="ChiTietThue.MaChiTietThue" value="@ChiTietThue.MaChiTietThue" />
                 <div class="mb-3">
-                    <label for="machutro" class="form-label">Mã phòng trọ:</label>
+                    <label for="machutro" class="form-label text-primary">Mã phòng trọ:</label>
                     <InputSelect id="machutro" @bind-Value="ChiTietThue.MaPhong" class="form-control">
                         @foreach (var item in phongTroList)
                         {
@@ -34,28 +33,29 @@ else
                     <ValidationMessage For="() => ChiTietThue.MaPhong" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="manguoithue" class="form-label">MaNguoiThue:</label>
+                    <label for="manguoithue" class="form-label text-primary">Mã người thuê:</label>
                     <InputText id="manguoithue" @bind-Value="ChiTietThue.MaNgThue" class="form-control" />
                     <ValidationMessage For="() => ChiTietThue.MaNgThue" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="thoigianthue" class="form-label">ThoiGianThue:</label>
+                    <label for="thoigianthue" class="form-label text-primary">Thời gian thuê:</label>
                     <InputDate id="thoigianthue" @bind-Value="ChiTietThue.ThoiGianThue" class="form-control" />
                     <ValidationMessage For="() => ChiTietThue.ThoiGianThue" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="diachithue" class="form-label">DiaChiThue:</label>
+                    <label for="diachithue" class="form-label text-primary">Địa chỉ thuê:</label>
                     <InputText id="diachithue" @bind-Value="ChiTietThue.DiaChiThue" class="form-control" />
                     <ValidationMessage For="() => ChiTietThue.DiaChiThue" class="text-danger" />
                 </div>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a href="/chitietthues" class="btn btn-primary">Quay lại </a>
             </EditForm>
         </div>
     </div>
 }
 
 <div>
-    <a href="/chitietthues">Back to List</a>
+    
 </div>
 
 @code {
