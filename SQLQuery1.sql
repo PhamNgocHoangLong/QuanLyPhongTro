@@ -1,0 +1,1 @@
+﻿BACKUP DATABASE "QuanLyPhongTroContext-d7d81f47-a6b7-4a95-b849-a858114d2ffb" TO DISK='C:\Users\anhki\QuanLyPhongTro.bak'
